@@ -15,7 +15,7 @@ const Contact = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center p-8">
+    <div id="contact"className="flex flex-col items-center justify-center p-8">
       {/* Contact Info & Form with Proper Spacing */}
       <div className="flex flex-col md:flex-row items-start justify-between w-full max-w-7xl gap-16">
         {/* Contact Details */}

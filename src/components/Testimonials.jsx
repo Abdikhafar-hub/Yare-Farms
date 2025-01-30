@@ -4,7 +4,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 const testimonials = [
   { id: 1, name: "Abdikhafar Issack", comment: "I have been purchasing poultry products from Yare Farms for over a year now, and I must say the quality is unmatched! The chickens are always healthy, and the eggs are fresh. The customer service is also exceptional—they respond quickly and ensure timely deliveries. I highly recommend Yare Farms to anyone looking for reliable poultry products!", image: "src/assets/images/abdikhafar.jpeg", },
   { id: 2, name: "Jamal", comment: "Honestly Yare Farms has completely transformed my experience with poultry farming. Their expert advice and top-quality feed have significantly improved my farm's productivity. What I love most is their honesty and commitment to delivering the best. They genuinely care about customer satisfaction!", image: "src/assets/images/jamal.jpeg",  },
-  { id: 3, name: "", comment: "Finding a trustworthy poultry supplier was a challenge until I discovered Yare Farms. Their organic and ethically raised chickens have made a huge difference in my restaurant’s menu. My customers love the taste, and I appreciate the transparency in their farming practices. Thank you, Yare Farms, for your dedication to quality!", image: "https://randomuser.me/api/portraits/women/2.jpg", },
+  { id: 3, name: "", comment: "Finding a trustworthy poultry supplier was a challenge until I discovered Yare Farms. Their organic and ethically raised chickens have made a huge difference in my restaurant’s menu. My customers love the taste, and I appreciate the transparency in their farming practices. Thank you, Yare Farms, for your dedication to quality!", image: "", },
 ];
 
 const Testimonials = () => {

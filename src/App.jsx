@@ -6,6 +6,8 @@ import Services from "./pages/Services";
 import Products from "./pages/Products";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 
 function App() {
   return (

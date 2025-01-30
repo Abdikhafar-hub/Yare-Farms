@@ -8,7 +8,7 @@ const Services = () => {
   ];
 
   return (
-    <div className="py-12 bg-white text-center">
+    <div id="services" className="py-12 bg-white text-center">
       {/* Section Title with Color Adjustment */}
       <h2 className="text-3xl font-bold mb-4">
         <span style={{ color: "#FF8C00" }}>Our</span> <span className="text-green-600">Services</span>

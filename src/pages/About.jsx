@@ -1,6 +1,6 @@
 const About = () => {
   return (
-    <div className="flex flex-col items-center text-center p-8">
+    <div id = "about" className="flex flex-col items-center text-center p-8">
       {/* Main Heading with One Word in Orange, Another in Green & Underline */}
       <h1 className="text-4xl font-bold mb-4">
         <span style={{ color: "#FF8C00" }}>About</span> <span className="text-green-600">Yare Farms</span>

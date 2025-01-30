@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +11,15 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Function to handle smooth scrolling
+  const handleScrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      setIsOpen(false); // Close mobile menu after clicking
+    }
+  };
 
   return (
     <>
@@ -32,24 +40,24 @@ const Navbar = () => {
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex space-x-4">
-            <Link to="/" className="relative px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            <a onClick={() => handleScrollToSection("home")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
               Home
-            </Link>
-            <Link to="/about" className="relative px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            </a>
+            <a onClick={() => handleScrollToSection("about")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
               About Us
-            </Link>
-            <Link to="/ourservices" className="relative px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            </a>
+            <a onClick={() => handleScrollToSection("services")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
               Our Services
-            </Link>
-            <Link to="/products" className="relative px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            </a>
+            <a onClick={() => handleScrollToSection("products")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
               Products
-            </Link>
-            <Link to="/contact" className="relative px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            </a>
+            <a onClick={() => handleScrollToSection("contact")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
               Contact
-            </Link>
-            <Link to="/blog" className="relative px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            </a>
+            <a onClick={() => handleScrollToSection("blog")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
               Blog
-            </Link>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -64,8 +72,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Sidebar Menu */}
-      <div
-        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform ${
+      <div className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden`}
       >
@@ -73,24 +80,24 @@ const Navbar = () => {
           ✖
         </button>
         <div className="flex flex-col mt-16 space-y-4 p-6">
-          <Link to="/" className="text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          <a onClick={() => handleScrollToSection("home")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
             Home
-          </Link>
-          <Link to="/about" className="text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          </a>
+          <a onClick={() => handleScrollToSection("about")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
             About Us
-          </Link>
-          <Link to="/ourservices" className="text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          </a>
+          <a onClick={() => handleScrollToSection("services")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
             Our Services
-          </Link>
-          <Link to="/products" className="text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          </a>
+          <a onClick={() => handleScrollToSection("products")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
             Products
-          </Link>
-          <Link to="/contact" className="text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          </a>
+          <a onClick={() => handleScrollToSection("contact")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
             Contact
-          </Link>
-          <Link to="/blog" className="text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          </a>
+          <a onClick={() => handleScrollToSection("blog")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
             Blog
-          </Link>
+          </a>
         </div>
       </div>
     </>
