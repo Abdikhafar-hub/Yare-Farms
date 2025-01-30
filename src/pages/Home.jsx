@@ -3,7 +3,7 @@ import Testimonials from '../components/Testimonials';
 import About from '../pages/About';
 import Products from '../pages/Products';
 import Services from '../pages/Services';
-import Gallery from '../pages/Gallery';
+import Blog from '../pages/Blog';
 import Contact from '../pages/Contact';
 import Footer from '../components/Footer';
 
@@ -14,7 +14,7 @@ const Home = () => {
       <About />
       <Services />
       <Products />
-      <Gallery />
+      <Blog />
       <Testimonials />
       <Contact />
       <Footer />

@@ -4,7 +4,7 @@ import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaWhatsapp } from "react-icons/fa"
 import "leaflet/dist/leaflet.css";
 
 // BioGex Pharma Coordinates
-const center = [-1.2773, 36.8273];
+const center = [-0.357295, 36.147739];
 
 const Contact = () => {
   const [isClient, setIsClient] = useState(false);
@@ -16,61 +16,63 @@ const Contact = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      {/* Contact Info & Form */}
-      <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-4xl">
+      {/* Contact Info & Form with Proper Spacing */}
+      <div className="flex flex-col md:flex-row items-start justify-between w-full max-w-7xl gap-16">
         {/* Contact Details */}
-        <div className="md:w-1/2 p-6 text-center md:text-left">
+        <div className="md:w-5/12 p-8 text-center md:text-left bg-gray-100 rounded-lg shadow-md md:mb-0 mb-8">
           <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-sm">contact</span>
           <h2 className="text-2xl font-bold mt-2">Contact Us</h2>
           <p className="text-gray-600">Get in touch with us</p>
 
-          <div className="mt-4 space-y-3">
+          <div className="mt-6 space-y-4">
             <p className="flex items-center">
               <FaMapMarkerAlt className="text-green-600 mr-2" />
-              Office 7, The Close, Ngara Road, Nairobi, Kenya
+              Baruti East, Nakuru West, Nakuru County, Kenya
             </p>
             <p className="flex items-center">
               <FaEnvelope className="text-green-600 mr-2" />
-              info@biogexpahrma.com
+              info@yarefarms.com
             </p>
             <p className="flex items-center">
               <FaPhone className="text-green-600 mr-2" />
-              +254 748 763980
+              +254 715 505 444
             </p>
             <p className="flex items-center">
               <FaWhatsapp className="text-green-600 mr-2" />
-              +254 748 763980
+              +254 715 505 444
             </p>
           </div>
         </div>
 
         {/* Contact Form */}
-        <div className="md:w-1/2 bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-          <form className="space-y-4">
-            <input type="text" placeholder="Your First Name" className="w-full p-3 border rounded-lg focus:outline-none" />
-            <input type="text" placeholder="Your Last Name" className="w-full p-3 border rounded-lg focus:outline-none" />
-            <input type="email" placeholder="Your Email" className="w-full p-3 border rounded-lg focus:outline-none" />
-            <input type="tel" placeholder="Your Phone Number" className="w-full p-3 border rounded-lg focus:outline-none" />
-            <textarea placeholder="Your Message" className="w-full p-3 border rounded-lg focus:outline-none h-24"></textarea>
-            <button className="w-full bg-green-700 text-white p-3 rounded-lg font-semibold hover:bg-green-800 transition">
-              Send Message
-            </button>
-          </form>
-        </div>
+        {/* Contact Form */}
+<div className="md:w-7/12 bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+  <form className="space-y-4">
+    <input type="text" placeholder="Your First Name" className="w-full p-2 border rounded-lg focus:outline-none" />
+    <input type="text" placeholder="Your Last Name" className="w-full p-2 border rounded-lg focus:outline-none" />
+    <input type="email" placeholder="Your Email" className="w-full p-2 border rounded-lg focus:outline-none" />
+    <input type="tel" placeholder="Your Phone Number" className="w-full p-2 border rounded-lg focus:outline-none" />
+    <textarea placeholder="Your Message" className="w-full p-2 border rounded-lg focus:outline-none h-20"></textarea>
+    <button className="w-full bg-green-700 text-white p-3 rounded-lg font-semibold hover:bg-green-800 transition">
+      Send Message
+    </button>
+  </form>
+</div>
+
       </div>
 
       {/* OpenStreetMap with Leaflet */}
-      <div className="w-full max-w-4xl mt-8">
+      <div className="w-full max-w-5xl mt-12">
         {isClient && (
           <MapContainer center={center} zoom={16} className="w-full h-96 rounded-lg shadow-lg">
             {/* OpenStreetMap Tiles */}
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-            {/* Marker for BioGex Pharma */}
+            {/* Marker for Yare Farms */}
             <Marker position={center}>
               <Popup>
-                <strong>BioGex Pharma</strong><br />
-                Nairobi, Kenya
+                <strong>Yare Farms</strong><br />
+                Nakuru, Kenya
               </Popup>
             </Marker>
           </MapContainer>

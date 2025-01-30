@@ -3,8 +3,8 @@ import React from "react";
 const Services = () => {
   const services = [
     { id: 1, name: "Incubation Service", image: "src/assets/images/incubation.jpg" },
-    { id: 2, name: "Poultry Consulting Services", image: "/images/consulting.jpg" },
-    { id: 3, name: "Vaccination Services", image: "/images/vaccination.jpg" },
+    { id: 2, name: "Poultry Consulting Services", image: "src/assets/images/con.jpeg" },
+    { id: 3, name: "Vaccination Services", image: "src/assets/images/vacc.jpeg" },
   ];
 
   return (
@@ -22,18 +22,18 @@ const Services = () => {
         {services.map((service) => (
           <div 
             key={service.id} 
-            className="bg-white border rounded-lg text-center shadow-md w-48 h-48 mx-auto flex flex-col items-center justify-center"
+            className="bg-white border rounded-lg text-center shadow-md w-64 h-64 mx-auto flex flex-col items-center justify-center p-4"
           >
-            {/* Circular Image */}
-            <div className="w-16 h-16 mb-3">
+            {/* Rectangular Image */}
+            <div className="w-40 h-24 mb-3">
               <img
                 src={service.image}
                 alt={service.name}
-                className="rounded-full w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-md"
               />
             </div>
             {/* Service Name */}
-            <h3 className="text-sm font-semibold text-gray-900">{service.name}</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{service.name}</h3>
           </div>
         ))}
       </div>

@@ -2,18 +2,18 @@ import React from "react";
 
 const Products = () => {
   const products = [
-    { id: 1, name: "Day Old Improved Kienyeji Chicks", description: "Healthy and robust day-old chicks.", image: "/images/day-old-chicks.jpg" },
-    { id: 2, name: "Week Old Improved Kienyeji Chicks", description: "Week-old chicks ready for your farm.", image: "/images/week-old-chicks.jpg" },
-    { id: 3, name: "Two Weeks Old Improved Kienyeji Chicks", description: "Two-week-old chicks, growing strong.", image: "/images/two-weeks-old.jpg" },
-    { id: 4, name: "Three Weeks Old Improved Kienyeji Chicks", description: "Three-week-old chicks, almost ready for the field.", image: "/images/three-weeks-old.jpg" },
-    { id: 5, name: "Cockerels", description: "Young male chickens for breeding or meat.", image: "/images/cockerels.jpg" },
-    { id: 6, name: "Laying Hens", description: "Productive hens for egg production.", image: "/images/laying-hens.jpg" },
-    { id: 7, name: "Fertilized Kienyeji Eggs", description: "High-quality fertilized eggs for hatching.", image: "/images/fertilized-eggs.jpg" },
-    { id: 8, name: "Fresh Kienyeji Eggs", description: "Fresh eggs for consumption.", image: "/images/fresh-eggs.jpg" },
-    { id: 9, name: "Layers Eggs", description: "Eggs from our best laying hens.", image: "/images/layers-eggs.jpg" },
-    { id: 10, name: "Ex-Layers", description: "Retired laying hens, great for meat.", image: "/images/ex-layers.jpg" },
-    { id: 11, name: "Broilers", description: "Fast-growing chickens for meat production.", image: "/images/broilers.jpg" },
-    { id: 12, name: "Manure", description: "Organic fertilizer from our poultry.", image: "/images/manure.jpg" },
+    { id: 1, name: "Day Old Improved Kienyeji Chicks", description: "Healthy and robust day-old chicks.", image: "src/assets/images/1.jpg" },
+    { id: 2, name: "Week Old Improved Kienyeji Chicks", description: "Week-old chicks ready for your farm.", image: "src/assets/images/2.png" },
+    { id: 3, name: "Two Weeks Old Improved Kienyeji Chicks", description: "Two-week-old chicks, growing strong.", image: "src/assets/images/4 (1).jpg" },
+    { id: 4, name: "Three Weeks Old Improved Kienyeji Chicks", description: "Three-week-old chicks, almost ready for the field.", image: "src/assets/images/3.jpg" },
+    { id: 5, name: "Cockerels", description: "Young male chickens for breeding or meat.", image: "src/assets/images/cockerel2.jpg" },
+    { id: 6, name: "Laying Hens", description: "Productive hens for egg production.", image: "src/assets/images/hen.jpg" },
+    { id: 7, name: "Fertilized Kienyeji Eggs", description: "High-quality fertilized eggs for hatching.", image: "src/assets/images/egg.jpg" },
+    { id: 8, name: "Fresh Kienyeji Eggs", description: "Fresh eggs for consumption.", image: "src/assets/images/jpg.jpg" },
+    { id: 9, name: "Layers Eggs", description: "Eggs from our best laying hens.", image: "src/assets/images/layersegg.jpg" },
+    { id: 10, name: "Ex-Layers", description: "Retired laying hens, great for meat.", image: "src/assets/images/exlayers.jpeg" },
+    { id: 11, name: "Broilers", description: "Fast-growing chickens for meat production.", image: "src/assets/images/broilers.jpg" },
+    { id: 12, name: "Manure", description: "Organic fertilizer from our poultry.", image: "src/assets/images/manure.jpg" },
   ];
 
   return (
@@ -31,14 +31,14 @@ const Products = () => {
         {products.map((product) => (
           <div 
             key={product.id} 
-            className="bg-white border rounded-lg shadow-md w-72 h-40 mx-auto flex flex-col justify-center items-center text-left p-4 hover:shadow-lg transition"
+            className="bg-white border rounded-lg shadow-md w-72 h-56 mx-auto flex flex-col justify-start items-center text-center p-4 hover:shadow-lg transition"
           >
-            {/* Product Image */}
-            <div className="w-12 h-12 mb-3">
+            {/* Rectangular Product Image */}
+            <div className="w-40 h-24 mb-3">
               <img
                 src={product.image}
                 alt={product.name}
-                className="rounded-full w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-md"
               />
             </div>
             {/* Product Name & Description */}

@@ -22,23 +22,14 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, [slides.length]);
 
-  // Function to manually navigate slides
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
   return (
     <div className="relative h-screen overflow-hidden">
       {/* Image Slider */}
-      <div className="relative w-full h-full flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+      <div className="absolute inset-0 w-full h-full flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
         {slides.map((slide, index) => (
           <div key={slide.id} className="w-full h-full flex-shrink-0 relative">
             <img src={slide.image} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black opacity-50"></div>
+            <div className="absolute inset-0 bg-black opacity-40"></div>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-6">
               
               {/* Subtitle (Welcome to Yare Farms) - Only on the first slide */}
@@ -69,10 +60,10 @@ const Hero = () => {
       </div>
 
       {/* Navigation Buttons */}
-      <button onClick={prevSlide} className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 p-4 rounded-full text-white hover:bg-gray-900 transition">
+      <button onClick={() => setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))} className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 p-4 rounded-full text-white hover:bg-gray-900 transition">
         <FaArrowLeft size={28} />
       </button>
-      <button onClick={nextSlide} className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-700 p-4 rounded-full text-white hover:bg-gray-900 transition">
+      <button onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)} className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-700 p-4 rounded-full text-white hover:bg-gray-900 transition">
         <FaArrowRight size={28} />
       </button>
     </div>
