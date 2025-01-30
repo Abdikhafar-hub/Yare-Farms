@@ -14,20 +14,27 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Navbar Overlay (Floating Over Hero) */}
+      {/* Navbar: Always Visible Above Hero */}
       <nav
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-          isScrolled ? "bg-white shadow-md" : "bg-transparent"
+        className={`fixed top-0 left-0 w-full z-[1050] transition-all duration-500 ${
+          isScrolled ? "bg-white shadow-md" : "bg-white md:bg-transparent"
         }`}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 1050, // Ensure it's always above the hero
+        }}
       >
         <div className="container mx-auto flex justify-between items-center p-4">
           {/* Logo */}
           <div className="flex items-center">
             <img src="/images/logo.png" alt="Poultry Farm Logo" className="h-12 w-auto mr-3" />
-            <span className="text-lg font-extrabold text-green-700">Yare Farm</span>
+            <span className="text-lg font-extrabold text-green-700"></span>
           </div>
 
-          {/* Desktop Navigation with White Background */}
+          {/* Desktop Navigation (Visible Again!) */}
           <div className="hidden md:flex space-x-4">
             <a href="#home" className="px-4 py-2 font-bold text-green-700 bg-white border-2 border-green-700 rounded-lg hover:bg-green-700 hover:text-white transition">
               Home
@@ -52,7 +59,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)}>
-              <svg className={`w-6 h-6 text-green-700`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
               </svg>
             </button>
@@ -60,9 +67,9 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Sidebar Menu (Fixed) */}
+      {/* Mobile Sidebar Menu (Fixed Again) */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-[1000] transform ${
+        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-[1100] transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden`}
       >
