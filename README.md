@@ -1,4 +1,4 @@
-# Poultry Farm Website
+# Poultry Farm Websit
 
 Welcome to the Yare Farm Project! This project is built using React and Vite, providing a fast and efficient development environment with Hot Module Replacement (HMR) and ESLint rules for code quality.
 
