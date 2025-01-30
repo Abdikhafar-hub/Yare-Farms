@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const testimonials = [
-  { id: 1, name: "Abdikhafar Issack", comment: "I have been purchasing poultry products from Yare Farms for over a year now, and I must say the quality is unmatched! The chickens are always healthy, and the eggs are fresh. The customer service is also exceptional—they respond quickly and ensure timely deliveries. I highly recommend Yare Farms to anyone looking for reliable poultry products!", image: "src/assets/images/abdikhafar.jpeg", },
-  { id: 2, name: "Jamal", comment: "Honestly Yare Farms has completely transformed my experience with poultry farming. Their expert advice and top-quality feed have significantly improved my farm's productivity. What I love most is their honesty and commitment to delivering the best. They genuinely care about customer satisfaction!", image: "src/assets/images/jamal.jpeg",  },
-  { id: 3, name: "John Doe", comment: "Finding a trustworthy poultry supplier was a challenge until I discovered Yare Farms. Their organic and ethically raised chickens have made a huge difference in my restaurant’s menu. My customers love the taste, and I appreciate the transparency in their farming practices. Thank you, Yare Farms, for your dedication to quality!", image: "src/assets/images/ai.png", },
+  { id: 1, name: "Abdikhafar Issack", comment: "I have been purchasing poultry products from Yare Farms for over a year now, and I must say the quality is unmatched! The chickens are always healthy, and the eggs are fresh. The customer service is also exceptional—they respond quickly and ensure timely deliveries. I highly recommend Yare Farms to anyone looking for reliable poultry products!", image: "/images/abdikhafar.jpeg", },
+  { id: 2, name: "Jamal", comment: "Honestly Yare Farms has completely transformed my experience with poultry farming. Their expert advice and top-quality feed have significantly improved my farm's productivity. What I love most is their honesty and commitment to delivering the best. They genuinely care about customer satisfaction!", image: "/images/jamal.jpeg",  },
+  { id: 3, name: "John Doe", comment: "Finding a trustworthy poultry supplier was a challenge until I discovered Yare Farms. Their organic and ethically raised chickens have made a huge difference in my restaurant’s menu. My customers love the taste, and I appreciate the transparency in their farming practices. Thank you, Yare Farms, for your dedication to quality!", image: "/images/ai.png", },
 ];
 
 const Testimonials = () => {
@@ -56,7 +56,6 @@ const Testimonials = () => {
               <img src={testimonial.image} alt={testimonial.name} className="w-16 h-16 rounded-full border-2 border-gray-300 mb-2" />
               <p className="text-gray-700 italic px-4">{testimonial.comment}</p>
               <p className="mt-4 text-blue-600 font-semibold">{testimonial.name}</p>
-              <p className="text-gray-400 font-bold">{testimonial.company}</p>
             </div>
           ))}
         </div>

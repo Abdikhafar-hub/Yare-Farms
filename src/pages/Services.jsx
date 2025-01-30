@@ -2,9 +2,9 @@ import React from "react";
 
 const Services = () => {
   const services = [
-    { id: 1, name: "Incubation Service", image: "src/assets/images/incubation.jpg" },
-    { id: 2, name: "Poultry Consulting Services", image: "src/assets/images/con.jpeg" },
-    { id: 3, name: "Vaccination Services", image: "src/assets/images/vacc.jpeg" },
+    { id: 1, name: "Incubation Service", image: "/images/incubation.jpg" },
+    { id: 2, name: "Poultry Consulting Services", image: "/images/con.jpeg" },
+    { id: 3, name: "Vaccination Services", image: "/images/vacc.jpeg" },
   ];
 
   return (

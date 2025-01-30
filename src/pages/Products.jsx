@@ -2,22 +2,22 @@ import React from "react";
 
 const Products = () => {
   const products = [
-    { id: 1, name: "Day Old Improved Kienyeji Chicks", description: "Healthy and robust day-old chicks.", image: "src/assets/images/1.jpg" },
-    { id: 2, name: "Week Old Improved Kienyeji Chicks", description: "Week-old chicks ready for your farm.", image: "src/assets/images/2.png" },
-    { id: 3, name: "Two Weeks Old Improved Kienyeji Chicks", description: "Two-week-old chicks, growing strong.", image: "src/assets/images/4 (1).jpg" },
-    { id: 4, name: "Three Weeks Old Improved Kienyeji Chicks", description: "Three-week-old chicks, almost ready for the field.", image: "src/assets/images/3.jpg" },
-    { id: 5, name: "Cockerels", description: "Young male chickens for breeding or meat.", image: "src/assets/images/cockerel2.jpg" },
-    { id: 6, name: "Laying Hens", description: "Productive hens for egg production.", image: "src/assets/images/hen.jpg" },
-    { id: 7, name: "Fertilized Kienyeji Eggs", description: "High-quality fertilized eggs for hatching.", image: "src/assets/images/egg.jpg" },
-    { id: 8, name: "Fresh Kienyeji Eggs", description: "Fresh eggs for consumption.", image: "src/assets/images/jpg.jpg" },
-    { id: 9, name: "Layers Eggs", description: "Eggs from our best laying hens.", image: "src/assets/images/layersegg.jpg" },
-    { id: 10, name: "Ex-Layers", description: "Retired laying hens, great for meat.", image: "src/assets/images/exlayers.jpeg" },
-    { id: 11, name: "Broilers", description: "Fast-growing chickens for meat production.", image: "src/assets/images/broilers.jpg" },
-    { id: 12, name: "Manure", description: "Organic fertilizer from our poultry.", image: "src/assets/images/manure.jpg" },
+    { id: 1, name: "Day Old Improved Kienyeji Chicks", description: "Healthy and robust day-old chicks.", image: "/images/1.jpg" },
+    { id: 2, name: "Week Old Improved Kienyeji Chicks", description: "Week-old chicks ready for your farm.", image: "/images/2.png" },
+    { id: 3, name: "Two Weeks Old Improved Kienyeji Chicks", description: "Two-week-old chicks, growing strong.", image: "/images/4.jpg" }, // Fixed file name
+    { id: 4, name: "Three Weeks Old Improved Kienyeji Chicks", description: "Three-week-old chicks, almost ready for the field.", image: "/images/3.jpg" },
+    { id: 5, name: "Cockerels", description: "Young male chickens for breeding or meat.", image: "/images/cockerel2.jpg" },
+    { id: 6, name: "Laying Hens", description: "Productive hens for egg production.", image: "/images/hen.jpg" },
+    { id: 7, name: "Fertilized Kienyeji Eggs", description: "High-quality fertilized eggs for hatching.", image: "/images/egg.jpg" },
+    { id: 8, name: "Fresh Kienyeji Eggs", description: "Fresh eggs for consumption.", image: "/images/eggs.jpg" }, // Fixed file name
+    { id: 9, name: "Layers Eggs", description: "Eggs from our best laying hens.", image: "/images/layersegg.jpg" },
+    { id: 10, name: "Ex-Layers", description: "Retired laying hens, great for meat.", image: "/images/exlayers.jpeg" },
+    { id: 11, name: "Broilers", description: "Fast-growing chickens for meat production.", image: "/images/broilers.jpg" },
+    { id: 12, name: "Manure", description: "Organic fertilizer from our poultry.", image: "/images/manure.jpg" },
   ];
 
   return (
-    <div id="products"className="py-12 bg-white text-center">
+    <div className="py-12 bg-white text-center">
       {/* Section Title with Color Adjustment */}
       <h2 className="text-3xl font-bold mb-4">
         <span style={{ color: "#FF8C00" }}>Our</span> <span className="text-green-600">Products</span>

@@ -1,25 +1,24 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const blogs = [
   {
     id: 4,
     title: "Local (Kienyeji) vs. Hybrid Chickens: Which One to Choose?",
-    image: "src/assets/images/VSS.png",
+    image: "/images/VSS.png",
     description: "Understand the differences between local (Kienyeji) and hybrid chickens to make informed poultry business decisions.",
     link: "https://local-kienyeji-vs-hybrid-chickens.hashnode.dev/local-kienyeji-vs-hybrid-chickens-which-one-to-choose",
   },
   {
     id: 1,
     title: "10 Common Mistakes Beginners Make in Poultry Farming And How To Avoid Them",
-    image: "src/assets/images/poultry.jpg",
+    image: "/images/poultry.jpg",
     description: "Avoid common poultry farming mistakes that lead to losses. Learn how to manage your flock efficiently.",
     link: "https://mistakes-in-poultry-farming.hashnode.dev/10-common-mistakes-beginners-make-in-poultry-farming-and-how-to-avoid-them",
   },
   {
     id: 3,
     title: "Customer Satisfaction, Honesty and Delivering Quality Products In Poultry Farming",
-    image: "src/assets/images/sat.png",
+    image: "/images/sat.png",
     description: "How to Practice Professionalism, Honesty And Ensure Customer Satisfaction in Poultry Farming.",
     link: "https://customer-satisfaction.hashnode.dev/customer-satisfaction-honesty-and-delivering-quality-products-in-poultry-farming",
   },
@@ -27,7 +26,7 @@ const blogs = [
 
 const BlogList = () => {
   return (
-    <div id="blog"className="container mx-auto p-6">
+    <div id="blog" className="container mx-auto p-6">
       {/* Title with colored words using CSS inline styling */}
       <h2 className="text-center text-3xl font-bold mb-6">
         <span className="text-green-600">Poultry</span>{" "}
@@ -47,9 +46,14 @@ const BlogList = () => {
             <div className="p-4">
               <h3 className="text-xl font-semibold text-green-600">{blog.title}</h3>
               <p className="text-gray-600 mt-2">{blog.description}</p>
-              <Link to={blog.link} className="text-blue-500 mt-4 inline-block">
+              <a
+                href={blog.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 mt-4 inline-block"
+              >
                 Read More →
-              </Link>
+              </a>
             </div>
           </div>
         ))}

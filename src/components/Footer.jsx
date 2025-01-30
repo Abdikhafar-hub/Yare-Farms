@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../assets/images/logo.png"; // Adjust path based on your structure
 
 const Footer = () => {
   return (
@@ -8,7 +7,7 @@ const Footer = () => {
         
         {/* Logo and Description */}
         <div className="space-y-4">
-          <img src={logo} alt="Poultry Farm Logo" className="w-40 h-auto" />
+          <img src="/images/logo.png" alt="Poultry Farm Logo" className="w-40 h-auto" />
           <p className="text-gray-400 text-sm">
             Yare Farm is committed to delivering high-quality services and products in poultry farming, ensuring your birds grow healthy and thrive in a disease-free environment.
           </p>

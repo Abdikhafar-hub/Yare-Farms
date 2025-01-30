@@ -32,7 +32,7 @@ const Navbar = () => {
         <div className="container mx-auto flex justify-between items-center p-4">
           {/* Logo */}
           <div className="flex items-center">
-            <img src="src/assets/images/logo.png" alt="Poultry Farm Logo" className="h-12 w-auto mr-3" />
+            <img src="/images/logo.png" alt="Poultry Farm Logo" className="h-12 w-auto mr-3" />
             <span className={`text-lg font-extrabold ${isScrolled ? "text-green-700" : "text-green-600"}`}>
               
             </span>
