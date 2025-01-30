@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Mobile menu toggle
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,50 +12,39 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Function to handle smooth scrolling
-  const handleScrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-      setIsOpen(false); // Close mobile menu after clicking
-    }
-  };
-
   return (
     <>
-      {/* Main Navbar */}
+      {/* Navbar Overlay (Floating Over Hero) */}
       <nav
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${
-          isScrolled ? "bg-white/80 shadow-md" : "bg-transparent"
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+          isScrolled ? "bg-white shadow-md" : "bg-transparent"
         }`}
       >
         <div className="container mx-auto flex justify-between items-center p-4">
           {/* Logo */}
           <div className="flex items-center">
             <img src="/images/logo.png" alt="Poultry Farm Logo" className="h-12 w-auto mr-3" />
-            <span className={`text-lg font-extrabold ${isScrolled ? "text-green-700" : "text-green-600"}`}>
-              
-            </span>
+            <span className="text-lg font-extrabold text-green-700">Yare Farm</span>
           </div>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation with White Background */}
           <div className="hidden md:flex space-x-4">
-            <a onClick={() => handleScrollToSection("home")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            <a href="#home" className="px-4 py-2 font-bold text-green-700 bg-white border-2 border-green-700 rounded-lg hover:bg-green-700 hover:text-white transition">
               Home
             </a>
-            <a onClick={() => handleScrollToSection("about")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            <a href="#about" className="px-4 py-2 font-bold text-green-700 bg-white border-2 border-green-700 rounded-lg hover:bg-green-700 hover:text-white transition">
               About Us
             </a>
-            <a onClick={() => handleScrollToSection("services")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            <a href="#services" className="px-4 py-2 font-bold text-green-700 bg-white border-2 border-green-700 rounded-lg hover:bg-green-700 hover:text-white transition">
               Our Services
             </a>
-            <a onClick={() => handleScrollToSection("products")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            <a href="#products" className="px-4 py-2 font-bold text-green-700 bg-white border-2 border-green-700 rounded-lg hover:bg-green-700 hover:text-white transition">
               Products
             </a>
-            <a onClick={() => handleScrollToSection("contact")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            <a href="#contact" className="px-4 py-2 font-bold text-green-700 bg-white border-2 border-green-700 rounded-lg hover:bg-green-700 hover:text-white transition">
               Contact
             </a>
-            <a onClick={() => handleScrollToSection("blog")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
+            <a href="#blog" className="px-4 py-2 font-bold text-green-700 bg-white border-2 border-green-700 rounded-lg hover:bg-green-700 hover:text-white transition">
               Blog
             </a>
           </div>
@@ -63,7 +52,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)}>
-              <svg className={`w-6 h-6 ${isScrolled ? "text-green-700" : "text-green-600"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className={`w-6 h-6 text-green-700`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
               </svg>
             </button>
@@ -71,8 +60,9 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Sidebar Menu */}
-      <div className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform ${
+      {/* Mobile Sidebar Menu (Fixed) */}
+      <div
+        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-[1000] transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden`}
       >
@@ -80,22 +70,22 @@ const Navbar = () => {
           ✖
         </button>
         <div className="flex flex-col mt-16 space-y-4 p-6">
-          <a onClick={() => handleScrollToSection("home")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          <a href="#home" className="cursor-pointer text-green-700 text-lg font-extrabold bg-white border-2 border-green-700 px-4 py-2 rounded-lg hover:bg-green-700 hover:text-white transition">
             Home
           </a>
-          <a onClick={() => handleScrollToSection("about")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          <a href="#about" className="cursor-pointer text-green-700 text-lg font-extrabold bg-white border-2 border-green-700 px-4 py-2 rounded-lg hover:bg-green-700 hover:text-white transition">
             About Us
           </a>
-          <a onClick={() => handleScrollToSection("services")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          <a href="#services" className="cursor-pointer text-green-700 text-lg font-extrabold bg-white border-2 border-green-700 px-4 py-2 rounded-lg hover:bg-green-700 hover:text-white transition">
             Our Services
           </a>
-          <a onClick={() => handleScrollToSection("products")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          <a href="#products" className="cursor-pointer text-green-700 text-lg font-extrabold bg-white border-2 border-green-700 px-4 py-2 rounded-lg hover:bg-green-700 hover:text-white transition">
             Products
           </a>
-          <a onClick={() => handleScrollToSection("contact")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          <a href="#contact" className="cursor-pointer text-green-700 text-lg font-extrabold bg-white border-2 border-green-700 px-4 py-2 rounded-lg hover:bg-green-700 hover:text-white transition">
             Contact
           </a>
-          <a onClick={() => handleScrollToSection("blog")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
+          <a href="#blog" className="cursor-pointer text-green-700 text-lg font-extrabold bg-white border-2 border-green-700 px-4 py-2 rounded-lg hover:bg-green-700 hover:text-white transition">
             Blog
           </a>
         </div>
