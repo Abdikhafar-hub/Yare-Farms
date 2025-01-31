@@ -31,6 +31,7 @@ const Footer = () => {
             <li>Incubation Service</li>
             <li>Manure</li>
             <li>Poultry Consulting Services</li>
+            <li>Poultry Equipments: Drinkers, Feeders etc</li>
           </ul>
         </div>
 
