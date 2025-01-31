@@ -35,7 +35,7 @@ const Contact = () => {
             </p>
             <p className="flex items-center">
               <FaPhone className="text-green-600 mr-2" />
-              +254 715 505 444 or +254 757 800 700
+              0715505444 or 0757800700
             </p>
             <p className="flex items-center">
               <FaWhatsapp className="text-green-600 mr-2" />
