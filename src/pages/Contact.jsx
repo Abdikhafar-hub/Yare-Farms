@@ -39,7 +39,7 @@ const Contact = () => {
             </p>
             <p className="flex items-center">
               <FaWhatsapp className="text-green-600 mr-2" />
-              +254 715 505 444
+              0715505444
             </p>
           </div>
         </div>
