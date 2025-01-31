@@ -42,7 +42,7 @@ const Footer = () => {
           </h3>
           <ul className="space-y-2 text-gray-400">
             <li><i className="fas fa-map-marker-alt"></i> Baruti East, Nakuru West</li>
-            <li><i className="fas fa-phone-alt"></i> +254 715 505 444</li>
+            <li><i className="fas fa-phone-alt"></i> 0715505444</li>
             <li><i className="fas fa-envelope"></i> info@yarefarm.com</li>
             <li><i className="fas fa-clock"></i> Everyday - 9am until 5pm</li>
           </ul>
