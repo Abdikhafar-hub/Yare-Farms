@@ -14,6 +14,7 @@ const Products = () => {
     { id: 10, name: "Ex-Layers", description: "Retired laying hens, great for meat.", image: "/images/exlayers.jpeg" },
     { id: 11, name: "Broilers", description: "Fast-growing chickens for meat production.", image: "/images/broilers.jpg" },
     { id: 12, name: "Manure", description: "Organic fertilizer from our poultry.", image: "/images/manure.jpg" },
+    { id: 13, name: "Honey", description: "We sell high-quality, pure honey in 1KG, 500GM, and 300GM jars.", image: "/images/honey.jpg" },
   ];
 
   return (
