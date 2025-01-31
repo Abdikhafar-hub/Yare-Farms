@@ -31,11 +31,11 @@ const Contact = () => {
             </p>
             <p className="flex items-center">
               <FaEnvelope className="text-green-600 mr-2" />
-              info@yarefarms.com
+              yarefarm@gmail.com
             </p>
             <p className="flex items-center">
               <FaPhone className="text-green-600 mr-2" />
-              +254 715 505 444
+              +254 715 505 444 or +254 757 800 700
             </p>
             <p className="flex items-center">
               <FaWhatsapp className="text-green-600 mr-2" />
