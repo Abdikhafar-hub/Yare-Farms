@@ -1,46 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { use } from "react";
+import axios from "axios";
 
 const CartPage = () => {
-  const { cart, increaseQuantity, decreaseQuantity, removeFromCart, totalPrice } = useCart();
+  const {
+    cart,
+    increaseQuantity,
+    decreaseQuantity,
+    removeFromCart,
+    totalPrice,
+  } = useCart();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const baseUrl = "http://localhost:8000";
+  const handlePayment = () => {
+    console.log("Processing payment for:", phoneNumber, "Amount:", totalPrice);
 
-  const handlePayment = async () => {
-    if (!phoneNumber) {
-      alert("Please enter your phone number.");
-      return;
-    }
+    const initiatePayment = async () => {
+      try {
+        const response = await axios.post(`${baseUrl}/pay`, {
+          phoneNumber,
+          totalPrice,
+        });
 
-    try {
-      const response = await fetch("http://localhost:8000/mpesa/stkpush", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: phoneNumber, amount: totalPrice }),
-      });
+        if (response.status === 200) {
+          console.log("Payment successful:", response.data);
+        }
+      } catch (error) {
+        console.error("Payment failed:", error);
 
-      const data = await response.json();
-      if (data.ResponseCode === "0") {
-        alert("Payment request sent. Check your phone to complete the payment.");
-      } else {
-        alert("Payment request failed. Try again.");
+        if (error.response) {
+          console.log("Server responded with:", error.response.data);
+        } else if (error.request) {
+          console.log("No response received:", error.request);
+        } else {
+          console.log("Error setting up payment request:", error.message);
+        }
+      } finally {
+        setShowModal(false);
       }
-    } catch (error) {
-      console.error("Payment Error:", error);
-      alert("Something went wrong. Try again.");
-    }
-
-    setShowModal(false);
+    };
+    initiatePayment();
   };
 
-  return ( 
+  return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
       <div className="max-w-3xl bg-white shadow-md rounded-lg p-8">
         <h2 className="text-2xl font-bold text-green-700">Shopping Cart</h2>
         <p className="text-gray-600 text-md text-center mt-2">
-          🚚 Delivery available countrywide at customer cost, or pick up at a central location.
+          🚚 Delivery available countrywide at customer cost, or pick up at a
+          central location.
         </p>
 
         {cart.length === 0 ? (
@@ -48,27 +60,37 @@ const CartPage = () => {
         ) : (
           <div className="mt-4">
             {cart.map((item) => (
-              <div key={item.id} className="flex items-center justify-between border-b py-4">
+              <div
+                key={item.id}
+                className="flex items-center justify-between border-b py-4"
+              >
                 <div className="w-1/2">
                   <h3 className="font-bold text-gray-800">{item.name}</h3>
-                  <p className="text-gray-600">{item.price} KSH x {item.quantity}</p>
+                  <p className="text-gray-600">
+                    {item.price} KSH x {item.quantity}
+                  </p>
                 </div>
                 <div className="flex items-center border rounded-lg">
-                  <button 
-                    onClick={() => decreaseQuantity(item.id)} 
+                  <button
+                    onClick={() => decreaseQuantity(item.id)}
                     className="bg-red-500 text-white px-3 py-1 rounded-l-md hover:bg-red-600"
                   >
                     -
                   </button>
-                  <span className="px-4 py-1 text-center text-gray-800">{item.quantity}</span>
-                  <button 
-                    onClick={() => increaseQuantity(item.id)} 
+                  <span className="px-4 py-1 text-center text-gray-800">
+                    {item.quantity}
+                  </span>
+                  <button
+                    onClick={() => increaseQuantity(item.id)}
                     className="bg-green-500 text-white px-3 py-1 rounded-r-md hover:bg-green-600"
                   >
                     +
                   </button>
                 </div>
-                <button onClick={() => removeFromCart(item.id)} className="text-red-600 ml-4 flex items-center">
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="text-red-600 ml-4 flex items-center"
+                >
                   🗑 <span className="ml-1">Remove</span>
                 </button>
               </div>
@@ -76,15 +98,15 @@ const CartPage = () => {
 
             <h3 className="text-lg font-bold mt-4">Total: {totalPrice} KSH</h3>
 
-            <button 
+            <button
               onClick={() => setShowModal(true)}
               className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 w-full"
             >
               Make Payment (M-Pesa)
             </button>
 
-            <button 
-              onClick={() => navigate("/products")} 
+            <button
+              onClick={() => navigate("/products")}
               className="mt-2 bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700 w-full flex items-center justify-center"
             >
               🛒 Continue Shopping
@@ -97,22 +119,22 @@ const CartPage = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
             <h3 className="text-lg font-bold">Enter Phone Number</h3>
-            <input 
-              type="text" 
-              className="w-full p-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
-              placeholder="Enter your phone number" 
-              value={phoneNumber} 
+            <input
+              type="text"
+              className="w-full p-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your phone number"
+              value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
             <p className="mt-3 font-semibold">Amount: {totalPrice} KSH</p>
             <div className="flex justify-end mt-4">
-              <button 
+              <button
                 onClick={() => setShowModal(false)}
                 className="bg-gray-400 text-white px-4 py-2 rounded-md mr-2 hover:bg-gray-500"
               >
                 Cancel
               </button>
-              <button 
+              <button
                 onClick={handlePayment}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
               >
