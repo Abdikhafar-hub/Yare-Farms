@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext"; // Import cart context
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { cart } = useCart(); // Access cart state
+  const location = useLocation(); // Get current page location
+  const navigate = useNavigate(); // Navigation function
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,12 +17,24 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Function to handle smooth scrolling
-  const handleScrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-      setIsOpen(false); // Close mobile menu after clicking
+  // Function to handle navigation & smooth scrolling
+  const handleNavigation = (sectionId) => {
+    if (location.pathname === "/") {
+      // If on home page, perform smooth scrolling
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+        setIsOpen(false); // Close menu
+      }
+    } else {
+      // If on another page, navigate back to home first
+      navigate("/");
+      setTimeout(() => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 500); // Delay to allow homepage to load
     }
   };
 
@@ -41,16 +55,9 @@ const Navbar = () => {
             </span>
           </div>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex space-x-4">
-            <a onClick={() => handleScrollToSection("home")} className="nav-link">Home</a>
-            <a onClick={() => handleScrollToSection("about")} className="nav-link">About Us</a>
-            <a onClick={() => handleScrollToSection("services")} className="nav-link">Our Services</a>
-            <a onClick={() => handleScrollToSection("products")} className="nav-link">Products</a>
-            <a onClick={() => handleScrollToSection("contact")} className="nav-link">Contact</a>
-            <a onClick={() => handleScrollToSection("blog")} className="nav-link">Blog</a>
-
-            {/* 🛒 Cart Icon with Count */}
+          {/* Cart Icon Next to Hamburger Menu */}
+          <div className="flex items-center space-x-4 md:hidden">
+            {/* 🛒 Cart Icon for Mobile */}
             <Link to="/cart" className="relative text-green-700 hover:text-green-800">
               <i className="fas fa-shopping-cart text-2xl"></i>
               {cart.length > 0 && (
@@ -59,15 +66,33 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
-          </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
+            {/* Mobile Menu Button */}
             <button onClick={() => setIsOpen(!isOpen)}>
               <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
               </svg>
             </button>
+          </div>
+
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex space-x-4">
+            <button onClick={() => handleNavigation("home")} className="nav-link">Home</button>
+            <button onClick={() => handleNavigation("about")} className="nav-link">About Us</button>
+            <button onClick={() => handleNavigation("services")} className="nav-link">Our Services</button>
+            <button onClick={() => handleNavigation("products")} className="nav-link">Products</button>
+            <button onClick={() => handleNavigation("contact")} className="nav-link">Contact</button>
+            <button onClick={() => handleNavigation("blog")} className="nav-link">Blog</button>
+
+            {/* 🛒 Cart Icon for Desktop */}
+            <Link to="/cart" className="relative text-green-700 hover:text-green-800">
+              <i className="fas fa-shopping-cart text-2xl"></i>
+              {cart.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
       </nav>
@@ -81,23 +106,12 @@ const Navbar = () => {
           ✖
         </button>
         <div className="flex flex-col mt-16 space-y-4 p-6">
-          <a onClick={() => handleScrollToSection("home")} className="mobile-nav-link">Home</a>
-          <a onClick={() => handleScrollToSection("about")} className="mobile-nav-link">About Us</a>
-          <a onClick={() => handleScrollToSection("services")} className="mobile-nav-link">Our Services</a>
-          <a onClick={() => handleScrollToSection("products")} className="mobile-nav-link">Products</a>
-          <a onClick={() => handleScrollToSection("contact")} className="mobile-nav-link">Contact</a>
-          <a onClick={() => handleScrollToSection("blog")} className="mobile-nav-link">Blog</a>
-
-          {/* 🛒 Mobile Cart Icon with Count */}
-          <Link to="/cart" className="relative text-green-700 hover:text-green-800 flex items-center" onClick={() => setIsOpen(false)}>
-            <i className="fas fa-shopping-cart text-2xl"></i>
-            {cart.length > 0 && (
-              <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ml-2">
-                {cart.length}
-              </span>
-            )}
-            <span className="ml-2 text-lg">Cart</span>
-          </Link>
+          <button onClick={() => handleNavigation("home")} className="mobile-nav-link">Home</button>
+          <button onClick={() => handleNavigation("about")} className="mobile-nav-link">About Us</button>
+          <button onClick={() => handleNavigation("services")} className="mobile-nav-link">Our Services</button>
+          <button onClick={() => handleNavigation("products")} className="mobile-nav-link">Products</button>
+          <button onClick={() => handleNavigation("contact")} className="mobile-nav-link">Contact</button>
+          <button onClick={() => handleNavigation("blog")} className="mobile-nav-link">Blog</button>
         </div>
       </div>
 

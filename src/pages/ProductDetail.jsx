@@ -7,7 +7,7 @@ const products = [
     { id: 2, name: "Week Old Improved Kienyeji Chicks", price: 130, image: "/images/2.png" },
     { id: 3, name: "Two Weeks Old Improved Kienyeji Chicks", price: 160, image: "/images/4.jpg" },
     { id: 4, name: "Three Weeks Old Improved Kienyeji Chicks", price: 190, image: "/images/3.jpg" },
-    { id: 5, name: "Month Old Improved Kienyeji Chicks", price: 250, image: "/images/5.jpg" },
+    { id: 5, name: "Month Old Improved Kienyeji Chicks", price: 250, image: "/images/month.jepg" },
     { id: 6, name: "Fertilized Kienyeji Eggs", price: 900, image: "/images/egg.jpg" },
     { id: 7, name: "Cockerels (2kg & Above)", price: 1300, image: "/images/cockerel2.jpg" },
     { id: 8, name: "Ex-Layers", price: 400, image: "/images/exlayers.jpeg" },
