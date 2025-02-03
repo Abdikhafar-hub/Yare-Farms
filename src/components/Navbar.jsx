@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext"; // Import cart context
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { cart } = useCart(); // Access cart state
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +61,16 @@ const Navbar = () => {
             <a onClick={() => handleScrollToSection("blog")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
               Blog
             </a>
+
+            {/* 🛒 Cart Icon with Count */}
+            <Link to="/cart" className="relative text-green-700 hover:text-green-800">
+              <i className="fas fa-shopping-cart text-2xl"></i>
+              {cart.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -70,36 +83,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-
-      {/* Mobile Sidebar Menu */}
-      <div className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 ease-in-out md:hidden`}
-      >
-        <button className="absolute top-4 right-4 text-green-700 text-2xl font-bold" onClick={() => setIsOpen(false)}>
-          ✖
-        </button>
-        <div className="flex flex-col mt-16 space-y-4 p-6">
-          <a onClick={() => handleScrollToSection("home")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
-            Home
-          </a>
-          <a onClick={() => handleScrollToSection("about")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
-            About Us
-          </a>
-          <a onClick={() => handleScrollToSection("services")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
-            Our Services
-          </a>
-          <a onClick={() => handleScrollToSection("products")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
-            Products
-          </a>
-          <a onClick={() => handleScrollToSection("contact")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
-            Contact
-          </a>
-          <a onClick={() => handleScrollToSection("blog")} className="cursor-pointer text-green-600 text-lg font-extrabold border-2 border-green-600 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-green-600 hover:text-white">
-            Blog
-          </a>
-        </div>
-      </div>
     </>
   );
 };
