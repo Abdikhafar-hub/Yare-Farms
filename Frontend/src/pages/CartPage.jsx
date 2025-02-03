@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { use } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 const CartPage = () => {
   const {
@@ -16,35 +16,40 @@ const CartPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const baseUrl = "http://localhost:8000";
+  
+
   const handlePayment = () => {
     console.log("Processing payment for:", phoneNumber, "Amount:", totalPrice);
-
+  
     const initiatePayment = async () => {
       try {
-        const response = await axios.post(`${baseUrl}/pay`, {
-          phoneNumber,
-          totalPrice,
+        const response = await fetch(`${baseUrl}/pay`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phoneNumber,
+            totalPrice,
+          }),
         });
-
-        if (response.status === 200) {
-          console.log("Payment successful:", response.data);
+  
+        if (!response.ok) {
+          throw new Error(`Payment failed with status: ${response.status}`);
         }
+  
+        const data = await response.json();
+        console.log("Payment successful:", data);
       } catch (error) {
-        console.error("Payment failed:", error);
-
-        if (error.response) {
-          console.log("Server responded with:", error.response.data);
-        } else if (error.request) {
-          console.log("No response received:", error.request);
-        } else {
-          console.log("Error setting up payment request:", error.message);
-        }
+        console.error("Payment failed:", error.message);
       } finally {
         setShowModal(false);
       }
     };
+  
     initiatePayment();
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
