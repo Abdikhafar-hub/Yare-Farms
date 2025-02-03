@@ -43,24 +43,12 @@ const Navbar = () => {
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex space-x-4">
-            <a onClick={() => handleScrollToSection("home")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
-              Home
-            </a>
-            <a onClick={() => handleScrollToSection("about")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
-              About Us
-            </a>
-            <a onClick={() => handleScrollToSection("services")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
-              Our Services
-            </a>
-            <a onClick={() => handleScrollToSection("products")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
-              Products
-            </a>
-            <a onClick={() => handleScrollToSection("contact")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
-              Contact
-            </a>
-            <a onClick={() => handleScrollToSection("blog")} className="cursor-pointer px-4 py-2 font-extrabold text-green-600 border-2 border-green-600 rounded-lg transition-all duration-500 bg-white hover:bg-green-600 hover:text-white">
-              Blog
-            </a>
+            <a onClick={() => handleScrollToSection("home")} className="nav-link">Home</a>
+            <a onClick={() => handleScrollToSection("about")} className="nav-link">About Us</a>
+            <a onClick={() => handleScrollToSection("services")} className="nav-link">Our Services</a>
+            <a onClick={() => handleScrollToSection("products")} className="nav-link">Products</a>
+            <a onClick={() => handleScrollToSection("contact")} className="nav-link">Contact</a>
+            <a onClick={() => handleScrollToSection("blog")} className="nav-link">Blog</a>
 
             {/* 🛒 Cart Icon with Count */}
             <Link to="/cart" className="relative text-green-700 hover:text-green-800">
@@ -76,13 +64,76 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)}>
-              <svg className={`w-6 h-6 ${isScrolled ? "text-green-700" : "text-green-600"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
               </svg>
             </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Sidebar Menu */}
+      <div className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        } transition-transform duration-300 ease-in-out md:hidden`}
+      >
+        <button className="absolute top-4 right-4 text-green-700 text-2xl font-bold" onClick={() => setIsOpen(false)}>
+          ✖
+        </button>
+        <div className="flex flex-col mt-16 space-y-4 p-6">
+          <a onClick={() => handleScrollToSection("home")} className="mobile-nav-link">Home</a>
+          <a onClick={() => handleScrollToSection("about")} className="mobile-nav-link">About Us</a>
+          <a onClick={() => handleScrollToSection("services")} className="mobile-nav-link">Our Services</a>
+          <a onClick={() => handleScrollToSection("products")} className="mobile-nav-link">Products</a>
+          <a onClick={() => handleScrollToSection("contact")} className="mobile-nav-link">Contact</a>
+          <a onClick={() => handleScrollToSection("blog")} className="mobile-nav-link">Blog</a>
+
+          {/* 🛒 Mobile Cart Icon with Count */}
+          <Link to="/cart" className="relative text-green-700 hover:text-green-800 flex items-center" onClick={() => setIsOpen(false)}>
+            <i className="fas fa-shopping-cart text-2xl"></i>
+            {cart.length > 0 && (
+              <span className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full ml-2">
+                {cart.length}
+              </span>
+            )}
+            <span className="ml-2 text-lg">Cart</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* Styles */}
+      <style>
+        {`
+          .nav-link {
+            cursor: pointer;
+            padding: 10px 15px;
+            font-weight: bold;
+            color: #047857;
+            border: 2px solid #047857;
+            border-radius: 8px;
+            background: white;
+            transition: all 0.3s ease-in-out;
+          }
+          .nav-link:hover {
+            background: #047857;
+            color: white;
+          }
+          .mobile-nav-link {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #047857;
+            border: 2px solid #047857;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+          }
+          .mobile-nav-link:hover {
+            background: #047857;
+            color: white;
+          }
+        `}
+      </style>
     </>
   );
 };
