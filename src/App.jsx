@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CartProvider } from "./context/CartContext";  // Import Cart Provider
+import { CartProvider } from "./context/CartContext";  
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
-import CartPage from "./pages/CartPage";  // Import Cart Page
+import CartPage from "./pages/CartPage"; 
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import "@fortawesome/fontawesome-free/css/all.min.css";

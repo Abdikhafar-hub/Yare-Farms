@@ -32,17 +32,17 @@ const Products = () => {
             key={product.id} 
             className="bg-white border rounded-lg shadow-md w-72 h-[340px] mx-auto flex flex-col justify-between items-center text-center p-4 hover:shadow-lg transition"
           >
-            {/* Product Image */}
+            
             <div className="w-40 h-24 mb-3">
               <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-md" />
             </div>
 
-            {/* Product Name & Description */}
+            
             <h3 className="text-md font-bold text-green-700">{product.name}</h3>
             <p className="text-gray-600 text-sm flex-grow">{product.description}</p>
             <p className="text-gray-800 font-semibold">Price: {product.price} KSH</p>
 
-            {/* View Details Button */}
+            
             <Link to={`/product/${product.id}`} className="mt-auto bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
               View Details
             </Link>

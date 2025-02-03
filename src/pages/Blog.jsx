@@ -27,14 +27,14 @@ const blogs = [
 const BlogList = () => {
   return (
     <div id="blog" className="container mx-auto p-6">
-      {/* Title with colored words using CSS inline styling */}
+      
       <h2 className="text-center text-3xl font-bold mb-6">
         <span className="text-green-600">Poultry</span>{" "}
         <span style={{ color: "#FF8C00" }}>Farming</span>{" "}
         <span className="text-green-600">Blogs</span>
       </h2>
 
-      {/* Underline styling for title */}
+      
       <div className="mt-2 flex justify-center">
         <span className="h-1 w-16 bg-green-600"></span>
       </div>

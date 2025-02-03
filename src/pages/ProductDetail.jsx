@@ -23,16 +23,16 @@ const ProductDetail = () => {
   const { addToCart, cart } = useCart();
   const product = products.find((p) => p.id === parseInt(id));
 
-  // Get existing quantity from Cart or default to 1
+  
   const cartItem = cart.find((item) => item.id === product?.id);
   const [quantity, setQuantity] = useState(cartItem ? cartItem.quantity : 1);
 
   if (!product) return <p className="text-center text-red-600">Product not found!</p>;
 
-  // Handle manual input change
+  
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value);
-    setQuantity(value >= 1 ? value : 1); // Prevent negative or zero values
+    setQuantity(value >= 1 ? value : 1); 
   };
 
   return (
@@ -42,7 +42,7 @@ const ProductDetail = () => {
         <h2 className="text-2xl font-bold text-green-700">{product.name}</h2>
         <p className="text-gray-600 text-lg">Price: {product.price} KSH</p>
 
-        {/* Quantity Selector (Now Includes Input Field) */}
+        
         <div className="flex items-center mt-4 border rounded-lg">
           <button 
             onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
@@ -65,7 +65,7 @@ const ProductDetail = () => {
           </button>
         </div>
 
-        {/* Add to Cart Button */}
+        
         <button
           onClick={() => addToCart({ ...product, quantity })}
           className="mt-4 bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 w-full"
@@ -73,7 +73,7 @@ const ProductDetail = () => {
           Add to Cart
         </button>
 
-        {/* Back to Products Button */}
+        
         <button 
           onClick={() => navigate("/products")} 
           className="mt-2 bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700 w-full"

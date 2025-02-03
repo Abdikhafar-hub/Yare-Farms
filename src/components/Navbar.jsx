@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext"; // Import cart context
+import { useCart } from "../context/CartContext"; 
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { cart } = useCart(); // Access cart state
-  const location = useLocation(); // Get current page location
-  const navigate = useNavigate(); // Navigation function
+  const { cart } = useCart(); 
+  const location = useLocation(); 
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,37 +17,37 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Function to handle navigation & smooth scrolling
+  
   const handleNavigation = (sectionId) => {
     if (location.pathname === "/") {
-      // If on home page, perform smooth scrolling
+      
       const section = document.getElementById(sectionId);
       if (section) {
         section.scrollIntoView({ behavior: "smooth", block: "start" });
-        setIsOpen(false); // Close menu
+        setIsOpen(false); 
       }
     } else {
-      // If on another page, navigate back to home first
+      
       navigate("/");
       setTimeout(() => {
         const section = document.getElementById(sectionId);
         if (section) {
           section.scrollIntoView({ behavior: "smooth", block: "start" });
         }
-      }, 500); // Delay to allow homepage to load
+      }, 500); 
     }
   };
 
   return (
     <>
-      {/* Main Navbar */}
+      
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 backdrop-blur-md ${
           isScrolled ? "bg-white/80 shadow-md" : "bg-transparent"
         }`}
       >
         <div className="container mx-auto flex justify-between items-center p-4">
-          {/* Logo */}
+          
           <div className="flex items-center">
             <img src="/images/logo2.png" alt="Poultry Farm Logo" className="h-12 w-auto mr-3" />
             <span className={`text-lg font-extrabold ${isScrolled ? "text-green-700" : "text-green-600"}`}>
@@ -55,9 +55,9 @@ const Navbar = () => {
             </span>
           </div>
 
-          {/* Cart Icon Next to Hamburger Menu */}
+          
           <div className="flex items-center space-x-4 md:hidden">
-            {/* 🛒 Cart Icon for Mobile */}
+            
             <Link to="/cart" className="relative text-green-700 hover:text-green-800">
               <i className="fas fa-shopping-cart text-2xl"></i>
               {cart.length > 0 && (
@@ -67,7 +67,7 @@ const Navbar = () => {
               )}
             </Link>
 
-            {/* Mobile Menu Button */}
+            
             <button onClick={() => setIsOpen(!isOpen)}>
               <svg className="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
@@ -75,7 +75,7 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Desktop Navigation Links */}
+          
           <div className="hidden md:flex space-x-4">
             <button onClick={() => handleNavigation("home")} className="nav-link">Home</button>
             <button onClick={() => handleNavigation("about")} className="nav-link">About Us</button>
@@ -84,7 +84,7 @@ const Navbar = () => {
             <button onClick={() => handleNavigation("contact")} className="nav-link">Contact</button>
             <button onClick={() => handleNavigation("blog")} className="nav-link">Blog</button>
 
-            {/* 🛒 Cart Icon for Desktop */}
+            
             <Link to="/cart" className="relative text-green-700 hover:text-green-800">
               <i className="fas fa-shopping-cart text-2xl"></i>
               {cart.length > 0 && (
@@ -97,7 +97,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Sidebar Menu */}
+      
       <div className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden`}
@@ -115,7 +115,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Styles */}
+      
       <style>
         {`
           .nav-link {

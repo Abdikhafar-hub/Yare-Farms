@@ -1,7 +1,7 @@
 const About = () => {
   return (
     <div id = "about" className="flex flex-col items-center text-center p-8">
-      {/* Main Heading with One Word in Orange, Another in Green & Underline */}
+      
       <h1 className="text-4xl font-bold mb-4">
         <span style={{ color: "#FF8C00" }}>About</span> <span className="text-green-600">Yare Farms</span>
       </h1>
@@ -15,7 +15,7 @@ const About = () => {
 
       <div className="space-y-8 max-w-3xl mx-auto mt-6">
         <section>
-          {/* Section Heading with Underline */}
+          
           <h2 className="text-2xl font-bold mb-2">
             <span style={{ color: "#FF8C00" }}>Our</span> <span className="text-green-600">Story</span>
           </h2>
@@ -28,7 +28,7 @@ const About = () => {
         </section>
 
         <section>
-          {/* Section Heading with Underline */}
+          
           <h2 className="text-2xl font-bold mb-2">
             <span style={{ color: "#FF8C00" }}>Our</span> <span className="text-green-600">Mission</span>
           </h2>
@@ -42,7 +42,7 @@ const About = () => {
         </section>
 
         <section>
-          {/* Section Heading with Underline */}
+          
           <h2 className="text-2xl font-bold mb-2">
             <span style={{ color: "#FF8C00" }}>Why</span> <span className="text-green-600">Choose</span> <span style={{ color: "#FF8C00" }}>Us?</span>
           </h2>

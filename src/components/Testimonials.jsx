@@ -10,7 +10,7 @@ const testimonials = [
 const Testimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Auto-slide every 5 seconds
+  
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
@@ -18,26 +18,26 @@ const Testimonials = () => {
     return () => clearInterval(interval);
   }, [currentIndex]);
 
-  // Next slide
+  
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   };
 
-  // Previous slide
+  
   const prevSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
   };
 
   return (
     <div className="relative w-full max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
-      {/* Title with custom colors */}
+      
       <h2 className="text-center text-2xl font-bold mb-6">
         <span className="text-green-600">Customer</span>{" "}
         <span style={{ color: "#FF8C00" }}>Feedback</span>
       </h2>
 
       <div className="relative flex items-center">
-        {/* Left arrow */}
+        
         <button
           className="absolute left-0 z-10 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
           onClick={prevSlide}
@@ -45,7 +45,7 @@ const Testimonials = () => {
           <FaChevronLeft size={24} />
         </button>
 
-        {/* Testimonials Container */}
+        
         <div className="flex justify-center w-full overflow-hidden">
           {testimonials.map((testimonial, index) => (
             <div
@@ -60,7 +60,7 @@ const Testimonials = () => {
           ))}
         </div>
 
-        {/* Right arrow */}
+        
         <button
           className="absolute right-0 z-10 bg-gray-200 p-2 rounded-full shadow-md hover:bg-gray-300"
           onClick={nextSlide}
@@ -69,7 +69,7 @@ const Testimonials = () => {
         </button>
       </div>
 
-      {/* Dot Indicators */}
+      
       <div className="flex justify-center mt-4">
         {testimonials.map((_, index) => (
           <span

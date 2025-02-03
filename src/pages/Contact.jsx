@@ -3,22 +3,22 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaWhatsapp } from "react-icons/fa";
 import "leaflet/dist/leaflet.css";
 
-// BioGex Pharma Coordinates
+
 const center = [-0.357295, 36.147739];
 
 const Contact = () => {
   const [isClient, setIsClient] = useState(false);
 
-  // Fix for SSR: Only render map after component mounts
+  
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   return (
     <div id="contact"className="flex flex-col items-center justify-center p-8">
-      {/* Contact Info & Form with Proper Spacing */}
+      
       <div className="flex flex-col md:flex-row items-start justify-between w-full max-w-7xl gap-16">
-        {/* Contact Details */}
+        
         <div className="md:w-5/12 p-8 text-center md:text-left bg-gray-100 rounded-lg shadow-md md:mb-0 mb-8">
           <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-sm">contact</span>
           <h2 className="text-2xl font-bold mt-2">Contact Us</h2>
@@ -44,8 +44,8 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Contact Form */}
-        {/* Contact Form */}
+        
+        
 <div className="md:w-7/12 bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
   <form className="space-y-4">
     <input type="text" placeholder="Your First Name" className="w-full p-2 border rounded-lg focus:outline-none" />
@@ -61,14 +61,14 @@ const Contact = () => {
 
       </div>
 
-      {/* OpenStreetMap with Leaflet */}
+      
       <div className="w-full max-w-5xl mt-12">
         {isClient && (
           <MapContainer center={center} zoom={16} className="w-full h-96 rounded-lg shadow-lg">
-            {/* OpenStreetMap Tiles */}
+            
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-            {/* Marker for Yare Farms */}
+            
             <Marker position={center}>
               <Popup>
                 <strong>Yare Farms</strong><br />

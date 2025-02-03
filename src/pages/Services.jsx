@@ -10,7 +10,7 @@ const Services = () => {
 
   return (
     <div id="services" className="py-12 bg-white text-center">
-      {/* Section Title with Color Adjustment */}
+      
       <h2 className="text-3xl font-bold mb-4">
         <span style={{ color: "#FF8C00" }}>Our</span> <span className="text-green-600">Services</span>
       </h2>
@@ -18,14 +18,14 @@ const Services = () => {
         <span className="h-1 w-16 bg-green-600"></span>
       </div>
 
-      {/* Services Grid */}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 px-4">
         {services.map((service) => (
           <div 
             key={service.id} 
             className="bg-white border rounded-lg text-center shadow-md w-64 h-64 mx-auto flex flex-col items-center justify-center p-4"
           >
-            {/* Rectangular Image */}
+            
             <div className="w-40 h-24 mb-3">
               <img
                 src={service.image}
@@ -33,7 +33,7 @@ const Services = () => {
                 className="w-full h-full object-cover rounded-md"
               />
             </div>
-            {/* Service Name */}
+            
             <h3 className="text-lg font-semibold text-gray-900">{service.name}</h3>
           </div>
         ))}
