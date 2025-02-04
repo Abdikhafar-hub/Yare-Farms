@@ -46,7 +46,7 @@ const password = Buffer.from(string).toString("base64");
 
 const initiatePayment = (rawPhone, amount) => {
   console.log(amount, rawPhone);
-  const phone = rawPhone.startsWith("254")
+  const phone = String(rawPhone).startsWith("254")
     ? rawPhone
     : `254${rawPhone.substring(1)}`;
   console.log(phone);
