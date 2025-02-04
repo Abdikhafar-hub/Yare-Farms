@@ -111,7 +111,7 @@ app.post("/call_back", (req, res) => {
   // Setup email data
   const mailOptions = {
     from: "Yare Farm", // Sender email
-    to: "jamaa.dahir@gmail.com", // Recipient email jamaa.dahir@gmail.com
+    to: "abdullahisalahdiis5395@gmail.com", // Recipient email jamaa.dahir@gmail.com
     subject: "Hello you", // Subject line
 
     html: "<p>You have some payments from your business Yare Farms!</p>", // HTML body (optional)
