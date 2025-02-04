@@ -27,7 +27,7 @@ const Contact = () => {
           <div className="mt-6 space-y-4">
             <p className="flex items-center">
               <FaMapMarkerAlt className="text-green-600 mr-2" />
-              Baruti East, Nakuru West, Nakuru County, Kenya
+              Nakuru County, Nakuru Town, along Mzee Wanyama Road, near Jimmia Women Centre
             </p>
             <p className="flex items-center">
               <FaEnvelope className="text-green-600 mr-2" />
@@ -35,11 +35,11 @@ const Contact = () => {
             </p>
             <p className="flex items-center">
               <FaPhone className="text-green-600 mr-2" />
-              0715505444 or 0757800700
+              0757800700 or 0715505444
             </p>
             <p className="flex items-center">
               <FaWhatsapp className="text-green-600 mr-2" />
-              0715505444
+              0715505444 or 0757800700
             </p>
           </div>
         </div>
