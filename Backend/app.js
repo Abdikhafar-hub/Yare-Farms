@@ -103,15 +103,15 @@ app.post("/call_back", (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "gmail", 
     auth: {
-      user: "abdikhafarissack@gmail.com", 
-      pass: "ycfs waeh bzwa rjaw", // Your email password (or use app password if 2FA enabled)
+      user: "yarefarm@gmail.com", 
+      pass: "sygm xesz zqut zuiz", // Your email password (or use app password if 2FA enabled)
     },
   });
 
   // Setup email data
   const mailOptions = {
     from: "Yare Farm", // Sender email
-    to: "yarefarm@gmail.com", // Recipient email
+    to: "abdikhafarissack@gmail.com", // Recipient email
     subject: "Hello you", // Subject line
 
     html: "<p>You have some payments from your business Yare Farms!</p>", // HTML body (optional)
