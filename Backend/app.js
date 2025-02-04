@@ -101,9 +101,9 @@ app.post("/call_back", (req, res) => {
 
   // Create a transporter object using SMTP transport
   const transporter = nodemailer.createTransport({
-    service: "gmail", // You can use other services like 'hotmail', 'yahoo', etc.
+    service: "gmail", 
     auth: {
-      user: "abdikhafarissack@gmail.com", // Your email address
+      user: "abdikhafarissack@gmail.com", 
       pass: "ycfs waeh bzwa rjaw", // Your email password (or use app password if 2FA enabled)
     },
   });
