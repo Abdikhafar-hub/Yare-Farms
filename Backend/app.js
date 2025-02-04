@@ -111,7 +111,7 @@ app.post("/call_back", (req, res) => {
   // Setup email data
   const mailOptions = {
     from: "Yare Farm", // Sender email
-    to: "abdikhafarissack@gmail.com", // Recipient email
+    to: "abdikhafarissack@gmail.com", // Recipient email jamaa.dahir@gmail.com
     subject: "Hello you", // Subject line
 
     html: "<p>You have some payments from your business Yare Farms!</p>", // HTML body (optional)
@@ -127,7 +127,7 @@ app.post("/call_back", (req, res) => {
     }
   });
 });
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Litsening to port ${port}`);
 });
