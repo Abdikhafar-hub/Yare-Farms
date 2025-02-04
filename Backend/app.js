@@ -45,11 +45,11 @@ const string = `${shortCode}${passKey}${timeStamp}`;
 const password = Buffer.from(string).toString("base64");
 
 const initiatePayment = (rawPhone, amount) => {
-  console.log(amount, rawPhone);
+  
   const phone = String(rawPhone).startsWith("254")
     ? rawPhone
     : `254${rawPhone.substring(1)}`;
-  console.log(phone);
+  
   axios
     .post(
       "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
@@ -74,7 +74,7 @@ const initiatePayment = (rawPhone, amount) => {
       }
     )
     .then((response) => {
-      console.log(response.data);
+      
     })
     .catch((error) => {
       console.error(
@@ -93,7 +93,7 @@ app.post("/pay", (req, res) => {
 
 app.post("/call_back", (req, res) => {
   console.log("request body received");
-  console.log(req.body.Body.stkCallback.ResultCode);
+  console.log(req.body);
   const response = req.body.Body;
   if (response.stkCallback.ResultCode != 0) {
     return;

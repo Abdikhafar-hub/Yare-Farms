@@ -15,7 +15,7 @@ const CartPage = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const baseUrl = "http://localhost:8000";
+  const baseUrl = "https://yare-farms.onrender.com";
   
 
   const handlePayment = () => {
