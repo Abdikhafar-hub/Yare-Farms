@@ -4,7 +4,7 @@ import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaWhatsapp } from "react-icons/fa"
 import "leaflet/dist/leaflet.css";
 
 
-const center = [-0.357295, 36.147739];
+const center = [-0.3561151, 36.1500788];
 
 const Contact = () => {
   const [isClient, setIsClient] = useState(false);
