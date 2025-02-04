@@ -41,7 +41,7 @@ const Footer = () => {
             <span style={{ color: "#FF8C00" }}>Contact</span> <span className="text-green-600">Us</span>
           </h3>
           <ul className="space-y-2 text-gray-400">
-            <li><i className="fas fa-map-marker-alt"></i> Baruti East, Nakuru West</li>
+            <li><i className="fas fa-map-marker-alt"></i> Nakuru County, Nakuru Town, along Mzee Wanyama Road, near Jimmia Women Centre</li>
             <li><i className="fas fa-phone-alt"></i> 0715505444</li>
             <li><i className="fas fa-envelope"></i> info@yarefarm.com</li>
             <li><i className="fas fa-clock"></i> Everyday - 9am until 5pm</li>
