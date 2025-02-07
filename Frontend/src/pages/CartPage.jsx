@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import axios from "axios";
 
 const CartPage = () => {
   const {
@@ -8,45 +9,58 @@ const CartPage = () => {
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
-    totalPrice, // ✅ Ensure this is used as a value, NOT a function
+    totalPrice, // ✅ Ensure this is a value, not a function
   } = useCart();
+  
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const baseUrl = "https://yare-farms.onrender.com";
+  const [userToken, setUserToken] = useState(null); // ✅ Stores logged-in user token
+  const baseUrl = "http://localhost:8000/pay";
 
-  // ✅ Ensure Payment Function is working
-  const handlePayment = () => {
+  // ✅ Check if User is Logged In
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setUserToken(token);
+  }, []);
+
+  // ✅ Ensure Only Logged-in Users Can Make Payments
+  const handlePayment = async () => {
+    const token = localStorage.getItem("token"); // ✅ Get the stored JWT token
+  
+    if (!token) {
+      alert("🚫 You must be logged in to make a payment!");
+      navigate("/login");
+      return;
+    }
+  
     console.log("Processing payment for:", phoneNumber, "Amount:", totalPrice);
-
-    const initiatePayment = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/pay`, {
-          method: "POST",
-          headers: {
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/pay", // ✅ Fix API URL
+        { phoneNumber, totalPrice },
+        {
+          headers: { 
+            Authorization: `Bearer ${token}`, // ✅ Correct token format
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            phoneNumber,
-            totalPrice, // ✅ Use totalPrice as value
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Payment failed with status: ${response.status}`);
         }
-
-        const data = await response.json();
-        console.log("Payment successful:", data);
-      } catch (error) {
-        console.error("Payment failed:", error.message);
-      } finally {
-        setShowModal(false);
+      );
+  
+      if (response.status === 200) {
+        alert("✅ Payment initiated successfully!");
+      } else {
+        throw new Error("Payment failed!");
       }
-    };
-
-    initiatePayment();
+    } catch (error) {
+      console.error("❌ Payment failed:", error.response?.data || error.message);
+      alert("🚫 Payment failed. Please try again.");
+    } finally {
+      setShowModal(false);
+    }
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
@@ -101,15 +115,25 @@ const CartPage = () => {
               </div>
             ))}
 
-            {/* ✅ Use totalPrice as a value, NOT a function */}
+            {/* ✅ Display Total Price */}
             <h3 className="text-lg font-bold mt-4">Total: {totalPrice} KSH</h3>
 
-            <button
-              onClick={() => setShowModal(true)}
-              className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 w-full"
-            >
-              Make Payment (M-Pesa)
-            </button>
+            {/* ✅ Only Show Payment Button if Logged In */}
+            {userToken ? (
+              <button
+                onClick={() => setShowModal(true)}
+                className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 w-full"
+              >
+                Make Payment (M-Pesa)
+              </button>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="mt-4 bg-gray-500 text-white px-6 py-2 rounded-md w-full"
+              >
+                🔒 Log in to Make Payment
+              </button>
+            )}
 
             <button
               onClick={() => navigate("/products")}

@@ -10,6 +10,8 @@ import CartPage from "./pages/CartPage";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="/cart" element={<CartPage />} /> {/* Cart Page Route */}
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>
     </CartProvider>

@@ -1,133 +1,161 @@
 const express = require("express");
 const cors = require("cors");
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
+const axios = require("axios");
 require("dotenv").config();
+
+const authRoutes = require("./routes/authRoutes"); // ✅ Import Authentication Routes
+const { authMiddleware } = require("./middleware/authMiddleware"); // ✅ Import JWT Middleware
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const axios = require("axios");
-const date = new Date();
+// ✅ Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ MongoDB Connection Error:", err.message));
 
-const timeStamp = `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(
-  -2
-)}${("0" + date.getDate()).slice(-2)}${("0" + date.getHours()).slice(-2)}${(
-  "0" + date.getMinutes()
-).slice(-2)}${("0" + date.getSeconds()).slice(-2)}`;
+/* --------------------------------------------------------
+  ✅ M-PESA INTEGRATION (STK PUSH)
+----------------------------------------------------------*/
 
+const shortCode = process.env.MPESA_SHORTCODE || "174379";
+const passKey = process.env.MPESA_PASSKEY || "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
 const consumerKey = process.env.MPESA_CONSUMER_KEY;
 const consumerSecret = process.env.MPESA_CONSUMER_SECRET;
-const keySecret = consumerKey + ":" + consumerSecret;
-const tokenMaker = Buffer.from(keySecret).toString("base64");
-let accessToken = "";
+const callbackUrl = process.env.CALLBACK_URL || "https://yourwebsite.com/mpesa/callback";
 
-axios
-  .get(
-    "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
-    {
-      headers: {
-        Authorization: `Basic ${tokenMaker}`,
-      },
-    }
-  )
-  .then((response) => {
-    accessToken = response.data.access_token;
-  })
-  .catch((error) => {
-    console.error("Error:", error.response || error.message);
-  });
+const getTimestamp = () => {
+  const date = new Date();
+  return `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + date.getDate()).slice(-2)}${("0" + date.getHours()).slice(-2)}${("0" + date.getMinutes()).slice(-2)}${("0" + date.getSeconds()).slice(-2)}`;
+};
 
-const shortCode = 174379;
-const passKey =
-  "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-const string = `${shortCode}${passKey}${timeStamp}`;
-const password = Buffer.from(string).toString("base64");
+// ✅ Generate Access Token for M-Pesa
+const getMpesaAccessToken = async () => {
+  try {
+    const keySecret = Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
+    const response = await axios.get("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials", {
+      headers: { Authorization: `Basic ${keySecret}` },
+    });
+    return response.data.access_token;
+  } catch (error) {
+    console.error("❌ M-Pesa Token Error:", error.response?.data || error.message);
+    return null;
+  }
+};
 
-const initiatePayment = (rawPhone, amount) => {
-  
-  const phone = String(rawPhone).startsWith("254")
-    ? rawPhone
-    : `254${rawPhone.substring(1)}`;
-  
-  axios
-    .post(
+// ✅ STK Push Payment
+const initiatePayment = async (rawPhone, amount) => {
+  try {
+    const accessToken = await getMpesaAccessToken();
+    if (!accessToken) throw new Error("Failed to obtain M-Pesa access token.");
+
+    const timeStamp = getTimestamp();
+    const password = Buffer.from(`${shortCode}${passKey}${timeStamp}`).toString("base64");
+    const phone = rawPhone.startsWith("254") ? rawPhone : `254${rawPhone.substring(1)}`;
+
+    const response = await axios.post(
       "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
       {
         BusinessShortCode: shortCode,
         Password: password,
         Timestamp: timeStamp,
         TransactionType: "CustomerPayBillOnline",
-        Amount: 1,
+        Amount: amount,
         PartyA: phone,
-        PartyB: 174379,
+        PartyB: shortCode,
         PhoneNumber: phone,
-        CallBackURL: process.env.CALLBACK_URL,
+        CallBackURL: callbackUrl,
         AccountReference: "Yare Farm",
-        TransactionDesc: "Payment of X",
+        TransactionDesc: "Payment for Yare Farm Services",
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`, // Use a valid token
+          Authorization: `Bearer ${accessToken}`,
         },
       }
-    )
-    .then((response) => {
-      
-    })
-    .catch((error) => {
-      console.error(
-        "Error:",
-        error.response ? error.response.data : error.message
-      );
-    });
+    );
+    console.log("✅ Payment Initiated Successfully:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("❌ Payment Error:", error.response?.data || error.message);
+    return { error: "Payment initiation failed" };
+  }
 };
-// const users = [];
-app.post("/pay", (req, res) => {
+
+// ✅ Protected Payment Route
+app.post("/pay", authMiddleware, async (req, res) => {
   const { phoneNumber, totalPrice } = req.body;
 
-  initiatePayment(phoneNumber, totalPrice);
-  res.send("payment iniatited");
-});
-
-app.post("/call_back", (req, res) => {
-  console.log("request body received");
-  console.log(req.body);
-  const response = req.body.Body;
-  if (response.stkCallback.ResultCode != 0) {
-    return;
+  if (!phoneNumber || !totalPrice) {
+    return res.status(400).json({ message: "Phone number and total price are required." });
   }
 
-  // Create a transporter object using SMTP transport
+  console.log(`Processing payment for: ${phoneNumber} Amount: ${totalPrice}`);
+  
+  // Call initiatePayment function
+  const paymentResponse = await initiatePayment(phoneNumber, totalPrice);
+  
+  if (paymentResponse.error) {
+    return res.status(500).json({ message: "Payment initiation failed" });
+  }
+
+  res.json({ message: "Payment initiated successfully.", data: paymentResponse });
+});
+
+/* --------------------------------------------------------
+  ✅ MPESA CALLBACK ROUTE
+----------------------------------------------------------*/
+
+app.post("/call_back", (req, res) => {
+  console.log("✅ M-Pesa Callback Data Received:", req.body);
+
+  const response = req.body.Body?.stkCallback;
+  if (!response || response.ResultCode !== 0) {
+    console.log("❌ Payment Failed:", response?.ResultDesc || "Unknown error");
+    return res.status(400).send("Payment failed.");
+  }
+
+  // ✅ Send Payment Confirmation Email
   const transporter = nodemailer.createTransport({
-    service: "gmail", 
+    service: "gmail",
     auth: {
-      user: "yarefarm@gmail.com", 
-      pass: "sygm xesz zqut zuiz", // Your email password (or use app password if 2FA enabled)
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 
-  // Setup email data
   const mailOptions = {
-    from: "Yare Farm", // Sender email
-    to: "jamaa.dahir@gmail.com", // Recipient email jamaa.dahir@gmail.com
-    subject: "Hello you", // Subject line
-
-    html: "<p>You have some payments from your business Yare Farms!</p>", // HTML body (optional)
+    from: "Yare Farm",
+    to: process.env.ADMIN_EMAIL || "jamaa.dahir@gmail.com",
+    subject: "Payment Received",
+    html: "<p>✅ You have received a payment from Yare Farms!</p>",
   };
 
-  // Send email
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log("Error occurred:", error);
+      console.log("❌ Email Error:", error);
+      return res.status(500).send("Email notification failed.");
     } else {
-      console.log("Email sent:", info.response);
-      res.send("sent email");
+      console.log("✅ Email Sent:", info.response);
+      res.send("Payment confirmed, email sent.");
     }
   });
 });
-const port = process.env.PORT || 5000;
+
+/* --------------------------------------------------------
+  ✅ AUTHENTICATION ROUTES
+----------------------------------------------------------*/
+app.use("/api/auth",authRoutes); // 🔹 Authentication is now handled in `authRoutes.js`
+
+/* --------------------------------------------------------
+  ✅ START SERVER
+----------------------------------------------------------*/
+const port = process.env.PORT || 8000;
 app.listen(port, () => {
-  console.log(`Litsening to port ${port}`);
+  console.log(`✅ Server running on port ${port}`);
 });
