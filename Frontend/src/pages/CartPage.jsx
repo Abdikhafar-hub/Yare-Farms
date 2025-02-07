@@ -16,7 +16,7 @@ const CartPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [userToken, setUserToken] = useState(null); // ✅ Stores logged-in user token
-  const baseUrl = "http://localhost:8000/pay";
+  const baseUrl = "https://yare-farms.onrender.com/pay";
 
   // ✅ Check if User is Logged In
   useEffect(() => {
@@ -26,7 +26,7 @@ const CartPage = () => {
 
   // ✅ Ensure Only Logged-in Users Can Make Payments
   const handlePayment = async () => {
-    const token = localStorage.getItem("token"); // ✅ Get the stored JWT token
+    const token = localStorage.getItem("token");
   
     if (!token) {
       alert("🚫 You must be logged in to make a payment!");
@@ -34,15 +34,15 @@ const CartPage = () => {
       return;
     }
   
-    console.log("Processing payment for:", phoneNumber, "Amount:", totalPrice);
+    console.log("🛠️ Sending Token:", token); // ✅ Debugging: Check if token exists
   
     try {
       const response = await axios.post(
-        "http://localhost:8000/pay", // ✅ Fix API URL
+        "https://yare-farms.onrender.com/pay",
         { phoneNumber, totalPrice },
         {
           headers: { 
-            Authorization: `Bearer ${token}`, // ✅ Correct token format
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -60,6 +60,7 @@ const CartPage = () => {
       setShowModal(false);
     }
   };
+  
   
 
   return (
