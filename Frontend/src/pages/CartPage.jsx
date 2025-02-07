@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { use } from "react";
-// import axios from "axios";
 
 const CartPage = () => {
   const {
@@ -10,17 +8,17 @@ const CartPage = () => {
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
-    totalPrice,
+    totalPrice, // ✅ Ensure this is used as a value, NOT a function
   } = useCart();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const baseUrl = "https://yare-farms.onrender.com";
-  
 
+  // ✅ Ensure Payment Function is working
   const handlePayment = () => {
     console.log("Processing payment for:", phoneNumber, "Amount:", totalPrice);
-  
+
     const initiatePayment = async () => {
       try {
         const response = await fetch(`${baseUrl}/pay`, {
@@ -30,14 +28,14 @@ const CartPage = () => {
           },
           body: JSON.stringify({
             phoneNumber,
-            totalPrice,
+            totalPrice, // ✅ Use totalPrice as value
           }),
         });
-  
+
         if (!response.ok) {
           throw new Error(`Payment failed with status: ${response.status}`);
         }
-  
+
         const data = await response.json();
         console.log("Payment successful:", data);
       } catch (error) {
@@ -46,35 +44,36 @@ const CartPage = () => {
         setShowModal(false);
       }
     };
-  
+
     initiatePayment();
   };
-  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
       <div className="max-w-3xl bg-white shadow-md rounded-lg p-8">
         <h2 className="text-2xl font-bold text-green-700">Shopping Cart</h2>
         <p className="text-gray-600 text-md text-center mt-2">
-          🚚 Delivery available countrywide at customer cost, or pick up at a
-          central location.
+          🚚 Delivery available countrywide at customer cost, or pick up at a central location.
         </p>
 
         {cart.length === 0 ? (
           <p className="text-gray-600 mt-4">Your cart is empty.</p>
         ) : (
           <div className="mt-4">
-            {cart.map((item) => (
+            {cart.map((item, index) => (
               <div
-                key={item.id}
+                key={index}
                 className="flex items-center justify-between border-b py-4"
               >
                 <div className="w-1/2">
-                  <h3 className="font-bold text-gray-800">{item.name}</h3>
+                  <h3 className="font-bold text-gray-800">
+                    {item.name} {item.size ? `(${item.size})` : ""}
+                  </h3>
                   <p className="text-gray-600">
                     {item.price} KSH x {item.quantity}
                   </p>
                 </div>
+
                 <div className="flex items-center border rounded-lg">
                   <button
                     onClick={() => decreaseQuantity(item.id)}
@@ -92,6 +91,7 @@ const CartPage = () => {
                     +
                   </button>
                 </div>
+
                 <button
                   onClick={() => removeFromCart(item.id)}
                   className="text-red-600 ml-4 flex items-center"
@@ -101,6 +101,7 @@ const CartPage = () => {
               </div>
             ))}
 
+            {/* ✅ Use totalPrice as a value, NOT a function */}
             <h3 className="text-lg font-bold mt-4">Total: {totalPrice} KSH</h3>
 
             <button
@@ -120,6 +121,7 @@ const CartPage = () => {
         )}
       </div>
 
+      {/* ✅ Payment Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
