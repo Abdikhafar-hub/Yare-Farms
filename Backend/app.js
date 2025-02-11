@@ -6,21 +6,19 @@ const mongoose = require("mongoose");
 const axios = require("axios");
 require("dotenv").config();
 
-const authRoutes = require("./routes/authRoutes"); // ✅ Import Authentication Routes
-const { authMiddleware } = require("./middleware/authMiddleware"); // ✅ Import JWT Middleware
+const authRoutes = require("./routes/authRoutes"); 
+const { authMiddleware } = require("./middleware/authMiddleware"); 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Connect to MongoDB
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Connection Error:", err.message));
 
-/* --------------------------------------------------------
-  ✅ M-PESA INTEGRATION (STK PUSH)
-----------------------------------------------------------*/
+
 
 const shortCode = process.env.MPESA_SHORTCODE || "174379";
 const passKey = process.env.MPESA_PASSKEY || "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
@@ -33,7 +31,7 @@ const getTimestamp = () => {
   return `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + date.getDate()).slice(-2)}${("0" + date.getHours()).slice(-2)}${("0" + date.getMinutes()).slice(-2)}${("0" + date.getSeconds()).slice(-2)}`;
 };
 
-// ✅ Generate Access Token for M-Pesa
+// Generate Access Token for M-Pesa
 const getMpesaAccessToken = async () => {
   try {
     const keySecret = Buffer.from(`${consumerKey}:${consumerSecret}`).toString("base64");
@@ -47,7 +45,7 @@ const getMpesaAccessToken = async () => {
   }
 };
 
-// ✅ STK Push Payment
+// STK Push Payment
 const initiatePayment = async (rawPhone, amount) => {
   try {
     const accessToken = await getMpesaAccessToken();
@@ -87,7 +85,7 @@ const initiatePayment = async (rawPhone, amount) => {
   }
 };
 
-// ✅ Protected Payment Route
+// Protected Payment Route
 app.post("/pay", authMiddleware, async (req, res) => {
   const { phoneNumber, totalPrice } = req.body;
 
@@ -107,9 +105,7 @@ app.post("/pay", authMiddleware, async (req, res) => {
   res.json({ message: "Payment initiated successfully.", data: paymentResponse });
 });
 
-/* --------------------------------------------------------
-  ✅ MPESA CALLBACK ROUTE
-----------------------------------------------------------*/
+
 
 app.post("/call_back", (req, res) => {
   console.log("✅ M-Pesa Callback Data Received:", req.body);
@@ -120,7 +116,7 @@ app.post("/call_back", (req, res) => {
     return res.status(400).send("Payment failed.");
   }
 
-  // ✅ Send Payment Confirmation Email
+  // Send Payment Confirmation Email
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -147,14 +143,10 @@ app.post("/call_back", (req, res) => {
   });
 });
 
-/* --------------------------------------------------------
-  ✅ AUTHENTICATION ROUTES
-----------------------------------------------------------*/
-app.use("/api/auth",authRoutes); // 🔹 Authentication is now handled in `authRoutes.js`
 
-/* --------------------------------------------------------
-  ✅ START SERVER
-----------------------------------------------------------*/
+app.use("/api/auth",authRoutes); //  Authentication is now handled in `authRoutes.js`
+
+
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`✅ Server running on port ${port}`);
