@@ -1,20 +1,24 @@
 const jwt = require("jsonwebtoken");
 
 exports.authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({ message: "Unauthorized: No token provided" });
+        }
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Unauthorized: No token provided" });
-  }
+        const token = authHeader.split(" ")[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-  const token = authHeader.split(" ")[1]; // ✅ Extracts the token from "Bearer <token>"
+        if (decoded.exp < Date.now() / 1000) {
+            return res.status(401).json({ message: "Unauthorized: Token expired" });
+        }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // ✅ Attach user data to request
-    next(); // ✅ Continue to the next middleware
-  } catch (error) {
-    console.error("❌ JWT Verification Error:", error.message);
-    return res.status(401).json({ message: "Unauthorized: Invalid token" });
-  }
+        req.user = { id: decoded.id }; // ✅ Attach only the user ID
+        console.log("✅ Extracted User ID from Token:", req.user.id);
+        next();
+    } catch (error) {
+        console.error("❌ JWT Verification Error:", error.message);
+        return res.status(401).json({ message: "Unauthorized: Invalid token" });
+    }
 };

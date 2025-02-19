@@ -17,8 +17,10 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-list-routes": "^1.2.4",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.0",
-    "nodemailer": "^6.10.0"
+    "nodemailer": "^6.10.0",
+    "pdfkit": "^0.16.0"
   }
 }

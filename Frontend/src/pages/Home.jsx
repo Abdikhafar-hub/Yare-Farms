@@ -16,12 +16,16 @@ const Home = () => {
       <div id="about">
         <About />
       </div>
-      <div id="services">
-        <Services />
-      </div>
+      
+      {/* Move Products above Services */}
       <div id="products">
         <Products />
       </div>
+      
+      <div id="services">
+        <Services />
+      </div>
+
       <div id="blog">
         <Blog />
       </div>

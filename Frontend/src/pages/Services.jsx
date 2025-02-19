@@ -5,7 +5,7 @@ const Services = () => {
     { id: 1, name: "Incubation Service", image: "/images/incubation.jpg" },
     { id: 2, name: "Poultry Consulting Services", image: "/images/con.jpeg" },
     { id: 3, name: "Vaccination Services", image: "/images/vacc.jpeg" },
-    { id: 4, name: "Poultry Equipments: Drinkers, feeders etc", image: "/images/feeder.jpeg" },
+
   ];
 
   return (
