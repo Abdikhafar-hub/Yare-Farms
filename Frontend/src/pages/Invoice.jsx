@@ -72,42 +72,57 @@ const Invoice = () => {
 
   const handleEmailShare = () => {
     const input = invoiceRef.current;
-
+  
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgWidth = 210; // A4 width in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
+  
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      const pdfBlob = pdf.output('blob');
+      const pdfBlob = pdf.output('blob'); // Generate PDF as a Blob
+      const pdfUrl = URL.createObjectURL(pdfBlob); // Create a temporary URL for the PDF
+  
+      // Save the PDF locally
+      pdf.save(`Invoice_${invoice.invoiceNo}.pdf`);
+  
       const subject = `Invoice ${invoice.invoiceNo}`;
-      const body = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}`;
-
+      const body = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}\n\nThe PDF has been downloaded. Please attach it from your downloads folder.`;
+  
       const emailLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       const emailAnchor = document.createElement('a');
       emailAnchor.href = emailLink;
       emailAnchor.click();
+  
+      // Clean up the temporary URL
+      URL.revokeObjectURL(pdfUrl);
     });
   };
 
   const handleWhatsAppShare = () => {
     const input = invoiceRef.current;
-
+  
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgWidth = 210; // A4 width in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
+  
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      const pdfBlob = pdf.output('blob');
-
-      const message = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}`;
+      const pdfBlob = pdf.output('blob'); // Generate PDF as a Blob
+      const pdfUrl = URL.createObjectURL(pdfBlob); // Create a temporary URL for the PDF
+  
+      // Save the PDF locally
+      pdf.save(`Invoice_${invoice.invoiceNo}.pdf`);
+  
+      const message = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}\n\nThe PDF has been downloaded. Please attach it from your downloads folder.`;
       const whatsappLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
       const whatsappAnchor = document.createElement('a');
       whatsappAnchor.href = whatsappLink;
       whatsappAnchor.click();
+  
+      // Clean up the temporary URL
+      URL.revokeObjectURL(pdfUrl);
     });
   };
 
