@@ -1,27 +1,34 @@
-import React, { useRef, useState } from "react";
-import { useReactToPrint } from "react-to-print";
+import { useRef, useState } from "react";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const Invoice = () => {
+  const invoiceRef = useRef();
+
   const [invoice, setInvoice] = useState({
     invoiceNo: "",
     date: "",
     dueDate: "",
-    issuedTo: {
-      name: "",
-      phone: "",
-      address: "",
-    },
+    issuedTo: { name: "", phone: "", address: "" },
     paymentMethod: "Cash",
     items: [],
   });
 
   const [newItem, setNewItem] = useState({ description: "", unitPrice: "", qty: "" });
-  const invoiceRef = useRef();
 
-  const handlePrint = useReactToPrint({
-    content: () => invoiceRef.current,
-    documentTitle: `Invoice_${invoice.invoiceNo}`,
-  });
+  const handlePrint = () => {
+    const input = invoiceRef.current;
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      pdf.save(`Invoice_${invoice.invoiceNo}.pdf`);
+    });
+  };
 
   const getSubtotal = () => invoice.items.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
 
@@ -56,11 +63,7 @@ const Invoice = () => {
       invoiceNo: "",
       date: "",
       dueDate: "",
-      issuedTo: {
-        name: "",
-        phone: "",
-        address: "",
-      },
+      issuedTo: { name: "", phone: "", address: "" },
       paymentMethod: "Cash",
       items: [],
     });
@@ -68,18 +71,48 @@ const Invoice = () => {
   };
 
   const handleEmailShare = () => {
-    const subject = `Invoice ${invoice.invoiceNo}`;
-    const body = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}`;
-    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const input = invoiceRef.current;
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      const pdfBlob = pdf.output('blob');
+      const subject = `Invoice ${invoice.invoiceNo}`;
+      const body = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}`;
+
+      const emailLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const emailAnchor = document.createElement('a');
+      emailAnchor.href = emailLink;
+      emailAnchor.click();
+    });
   };
 
   const handleWhatsAppShare = () => {
-    const message = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    const input = invoiceRef.current;
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      const pdfBlob = pdf.output('blob');
+
+      const message = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}`;
+      const whatsappLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      const whatsappAnchor = document.createElement('a');
+      whatsappAnchor.href = whatsappLink;
+      whatsappAnchor.click();
+    });
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", padding: "40px 0", fontFamily: "Arial, sans-serif" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minHeight: "100vh", padding: "40px 0", fontFamily: "Arial, sans-serif" }}>
       <div ref={invoiceRef} style={{ width: "600px", padding: "20px", background: "#fff", borderRadius: "8px", textAlign: "left", border: "1px solid #ddd" }}>
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <img 
@@ -174,14 +207,24 @@ const Invoice = () => {
             <p>Jamal Dahir</p>
           </div>
         </div>
-
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-          <button onClick={handlePrint} style={{ background: "green", color: "#fff" }}>Download PDF</button>
-          <button onClick={handleEmailShare} style={{ background: "blue", color: "#fff" }}>Share via Email</button>
-          <button onClick={handleWhatsAppShare} style={{ background: "green", color: "#fff" }}>Share via WhatsApp</button>
-          <button onClick={refreshInvoice} style={{ background: "red", color: "#fff" }}>Refresh</button>
-        </div>
       </div>
+
+      {/* Buttons (Excluded from Print) */}
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", width: "600px" }} className="print:hidden">
+        <button onClick={handlePrint} style={{ background: "green", color: "#fff" }}>Download PDF</button>
+        <button onClick={handleEmailShare} style={{ background: "blue", color: "#fff" }}>Share via Email</button>
+        <button onClick={handleWhatsAppShare} style={{ background: "green", color: "#fff" }}>Share via WhatsApp</button>
+        <button onClick={refreshInvoice} style={{ background: "red", color: "#fff" }}>Refresh</button>
+      </div>
+
+      {/* Hide buttons when printing */}
+      <style>
+        {`
+          @media print {
+            .print\\:hidden { display: none !important; }
+          }
+        `}
+      </style>
     </div>
   );
 };
