@@ -3,30 +3,19 @@ import { useReactToPrint } from "react-to-print";
 
 const Invoice = () => {
   const [invoice, setInvoice] = useState({
-    invoiceNo: "01234",
-    date: "11.02.2030",
-    dueDate: "11.03.2030",
+    invoiceNo: "",
+    date: "",
+    dueDate: "",
     issuedTo: {
-      name: "Richard Sanchez",
-      company: "Thynk Unlimited",
-      address: "123 Anywhere St., Any City",
+      name: "",
+      phone: "",
+      address: "",
     },
-    payTo: {
-      bank: "Borecele Bank",
-      accountName: "Adeline Palmerston",
-      accountNo: "0123 4567 8901",
-    },
-    items: [
-      { description: "Brand consultation", unitPrice: 100, qty: 1 },
-      { description: "Logo design", unitPrice: 100, qty: 1 },
-      { description: "Website design", unitPrice: 100, qty: 1 },
-      { description: "Social media templates", unitPrice: 100, qty: 1 },
-      { description: "Brand photography", unitPrice: 100, qty: 1 },
-      { description: "Brand guide", unitPrice: 100, qty: 1 },
-    ],
-    taxRate: 10,
+    paymentMethod: "Cash",
+    items: [],
   });
 
+  const [newItem, setNewItem] = useState({ description: "", unitPrice: "", qty: "" });
   const invoiceRef = useRef();
 
   const handlePrint = useReactToPrint({
@@ -34,105 +23,164 @@ const Invoice = () => {
     documentTitle: `Invoice_${invoice.invoiceNo}`,
   });
 
-  const handleShareWhatsApp = () => {
-    const message = `Invoice No: ${invoice.invoiceNo}\nTotal: $${getTotal()}\nDue Date: ${invoice.dueDate}`;
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent(message)}`,
-      "_blank"
-    );
+  const getSubtotal = () => invoice.items.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
+
+  const handleChange = (e, field, subField) => {
+    setInvoice((prev) => ({
+      ...prev,
+      [field]: subField ? { ...prev[field], [subField]: e.target.value } : e.target.value,
+    }));
   };
 
-  const handleShareEmail = () => {
-    const subject = `Invoice No: ${invoice.invoiceNo}`;
-    const body = `Hello,\n\nPlease find the invoice details below:\n\nInvoice No: ${invoice.invoiceNo}\nTotal: $${getTotal()}\nDue Date: ${invoice.dueDate}`;
-    window.open(
-      `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-        body
-      )}`
-    );
+  const handleItemChange = (e, field) => {
+    setNewItem({ ...newItem, [field]: e.target.value });
   };
 
-  const getSubtotal = () =>
-    invoice.items.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
+  const addItem = () => {
+    setInvoice((prev) => ({
+      ...prev,
+      items: [...prev.items, { ...newItem, unitPrice: parseFloat(newItem.unitPrice), qty: parseInt(newItem.qty) }],
+    }));
+    setNewItem({ description: "", unitPrice: "", qty: "" });
+  };
 
-  const getTotal = () => getSubtotal() + (getSubtotal() * invoice.taxRate) / 100;
+  const deleteItem = (index) => {
+    setInvoice((prev) => ({
+      ...prev,
+      items: prev.items.filter((_, i) => i !== index),
+    }));
+  };
+
+  const refreshInvoice = () => {
+    setInvoice({
+      invoiceNo: "",
+      date: "",
+      dueDate: "",
+      issuedTo: {
+        name: "",
+        phone: "",
+        address: "",
+      },
+      paymentMethod: "Cash",
+      items: [],
+    });
+    setNewItem({ description: "", unitPrice: "", qty: "" });
+  };
+
+  const handleEmailShare = () => {
+    const subject = `Invoice ${invoice.invoiceNo}`;
+    const body = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}`;
+    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const handleWhatsAppShare = () => {
+    const message = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+  };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "auto", padding: "20px" }}>
-      <div ref={invoiceRef} style={{ padding: "20px", background: "#fff" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-          <div>
-            <h1 style={{ color: "green" }}>INVOICE</h1>
-          </div>
-          <div>
-            <img src="your-logo-url.png" alt="Logo" style={{ width: "100px" }} />
-          </div>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", padding: "40px 0", fontFamily: "Arial, sans-serif" }}>
+      <div ref={invoiceRef} style={{ width: "600px", padding: "20px", background: "#fff", borderRadius: "8px", textAlign: "left", border: "1px solid #ddd" }}>
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <img 
+            src="https://res.cloudinary.com/ddkkfumkl/image/upload/v1740010628/hwrdd7skf8v8xybyv40d.png" 
+            alt="Company Logo" 
+            style={{ width: "100px", height: "100px", margin: "0 auto 10px", borderRadius: "8px" }}
+          />
+          <h1 style={{ color: "green", fontSize: "24px" }}>INVOICE</h1>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-          <div>
-            <strong>ISSUED TO:</strong>
-            <p>{invoice.issuedTo.name}</p>
-            <p>{invoice.issuedTo.company}</p>
-            <p>{invoice.issuedTo.address}</p>
-          </div>
-          <div>
-            <strong>INVOICE NO:</strong> {invoice.invoiceNo} <br />
-            <strong>DATE:</strong> {invoice.date} <br />
-            <strong>DUE DATE:</strong> {invoice.dueDate}
-          </div>
-        </div>
+        <table style={{ width: "100%", marginBottom: "20px" }}>
+          <tbody>
+            <tr>
+              <td><strong>Invoice No:</strong></td>
+              <td><input type="text" value={invoice.invoiceNo} onChange={(e) => handleChange(e, "invoiceNo")} /></td>
+            </tr>
+            <tr>
+              <td><strong>Date:</strong></td>
+              <td><input type="date" value={invoice.date} onChange={(e) => handleChange(e, "date")} /></td>
+            </tr>
+            <tr>
+              <td><strong>Due Date:</strong></td>
+              <td><input type="date" value={invoice.dueDate} onChange={(e) => handleChange(e, "dueDate")} /></td>
+            </tr>
+          </tbody>
+        </table>
 
-        <div>
-          <strong>PAY TO:</strong>
-          <p>{invoice.payTo.bank}</p>
-          <p>Account Name: {invoice.payTo.accountName}</p>
-          <p>Account No.: {invoice.payTo.accountNo}</p>
-        </div>
+        <h3 style={{ fontWeight: "bold", marginBottom: "10px" }}>Issued To</h3>
+        <table style={{ width: "100%" }}>
+          <tbody>
+            <tr>
+              <td><strong>Name:</strong></td>
+              <td><input type="text" placeholder="Name" value={invoice.issuedTo.name} onChange={(e) => handleChange(e, "issuedTo", "name")} /></td>
+            </tr>
+            <tr>
+              <td><strong>Phone:</strong></td>
+              <td><input type="text" placeholder="Phone Number" value={invoice.issuedTo.phone} onChange={(e) => handleChange(e, "issuedTo", "phone")} /></td>
+            </tr>
+            <tr>
+              <td><strong>Address:</strong></td>
+              <td><input type="text" placeholder="Address" value={invoice.issuedTo.address} onChange={(e) => handleChange(e, "issuedTo", "address")} /></td>
+            </tr>
+          </tbody>
+        </table>
 
-        <table width="100%" style={{ marginTop: "20px", borderCollapse: "collapse" }}>
+        <h3>Payment Method</h3>
+        <select value={invoice.paymentMethod} onChange={(e) => handleChange(e, "paymentMethod")}>
+          <option value="Cash">Cash</option>
+          <option value="Mpesa">Mpesa</option>
+          <option value="Bank">Bank</option>
+        </select>
+
+        <h3>Items</h3>
+        <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
           <thead>
             <tr style={{ background: "yellow" }}>
-              <th style={{ textAlign: "left", padding: "8px" }}>DESCRIPTION</th>
-              <th style={{ textAlign: "right", padding: "8px" }}>UNIT PRICE</th>
-              <th style={{ textAlign: "right", padding: "8px" }}>QTY</th>
-              <th style={{ textAlign: "right", padding: "8px" }}>TOTAL</th>
+              <th>Description</th>
+              <th>Unit Price (Ksh)</th>
+              <th>Qty</th>
+              <th>Total (Ksh)</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {invoice.items.map((item, index) => (
               <tr key={index}>
-                <td style={{ padding: "8px" }}>{item.description}</td>
-                <td style={{ textAlign: "right", padding: "8px" }}>${item.unitPrice}</td>
-                <td style={{ textAlign: "right", padding: "8px" }}>{item.qty}</td>
-                <td style={{ textAlign: "right", padding: "8px" }}>${item.unitPrice * item.qty}</td>
+                <td>{item.description}</td>
+                <td>Ksh {item.unitPrice}</td>
+                <td>{item.qty}</td>
+                <td>Ksh {item.unitPrice * item.qty}</td>
+                <td><button onClick={() => deleteItem(index)}>Delete</button></td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <div style={{ textAlign: "right", marginTop: "20px" }}>
-          <p>SUBTOTAL: <strong>${getSubtotal()}</strong></p>
-          <p>Tax ({invoice.taxRate}%): <strong>${(getSubtotal() * invoice.taxRate) / 100}</strong></p>
-          <p style={{ fontSize: "18px", fontWeight: "bold", color: "orange" }}>TOTAL: ${getTotal()}</p>
+        <div>
+          <input type="text" placeholder="Description" value={newItem.description} onChange={(e) => handleItemChange(e, "description")} />
+          <input type="number" placeholder="Unit Price" value={newItem.unitPrice} onChange={(e) => handleItemChange(e, "unitPrice")} />
+          <input type="number" placeholder="Qty" value={newItem.qty} onChange={(e) => handleItemChange(e, "qty")} />
+          <button onClick={addItem}>Add Item</button>
         </div>
 
-        <div style={{ textAlign: "right", marginTop: "20px" }}>
-          <p>________________________</p>
-          <p style={{ fontStyle: "italic" }}>Adeline Palmerston</p>
-        </div>
-      </div>
+        <h3 style={{ textAlign: "right" }}>Total: Ksh {getSubtotal()}</h3>
 
-      <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
-        <button onClick={handlePrint} style={{ background: "green", color: "#fff", padding: "10px 15px", border: "none", cursor: "pointer" }}>
-          Download PDF
-        </button>
-        <button onClick={handleShareEmail} style={{ background: "yellow", color: "#000", padding: "10px 15px", border: "none", cursor: "pointer" }}>
-          Share via Email
-        </button>
-        <button onClick={handleShareWhatsApp} style={{ background: "orange", color: "#fff", padding: "10px 15px", border: "none", cursor: "pointer" }}>
-          Share via WhatsApp
-        </button>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
+          <div>
+            <p>Thank you for doing business with us!</p>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <p>__________________________</p>
+            <p>Jamal Dahir</p>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
+          <button onClick={handlePrint} style={{ background: "green", color: "#fff" }}>Download PDF</button>
+          <button onClick={handleEmailShare} style={{ background: "blue", color: "#fff" }}>Share via Email</button>
+          <button onClick={handleWhatsAppShare} style={{ background: "green", color: "#fff" }}>Share via WhatsApp</button>
+          <button onClick={refreshInvoice} style={{ background: "red", color: "#fff" }}>Refresh</button>
+        </div>
       </div>
     </div>
   );
