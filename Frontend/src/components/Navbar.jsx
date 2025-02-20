@@ -95,7 +95,7 @@ const Navbar = ({ user }) => {
             <button onClick={handleAdminAccess} className="nav-link bg-green-600 text-white">Generate Invoice</button>
           </div>
 
-          {/* Cart and Profile Icons */}
+          {/* Cart, Profile Icons, and Mobile Toggle Button */}
           <div className="flex items-center space-x-4">
             <Link to="/cart" className="relative text-green-700 hover:text-green-800 flex items-center">
               <i className="fas fa-shopping-cart text-2xl"></i>
@@ -104,17 +104,15 @@ const Navbar = ({ user }) => {
             <button onClick={() => setShowProfileModal(true)} className="relative flex items-center text-green-700 hover:text-green-800">
               <i className="fas fa-user-circle text-2xl"></i>
             </button>
+            <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-green-700 hover:text-green-800 p-2">
+              <i className="fas fa-bars text-2xl"></i>
+            </button>
           </div>
-
-          {/* Mobile Toggle Button */}
-          <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-green-700 hover:text-green-800 p-2">
-            <i className="fas fa-bars text-2xl"></i>
-          </button>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 space-y-4 md:hidden">
+          <div className="absolute top-16 left-0 w-1/2 bg-white shadow-md flex flex-col items-center py-4 space-y-4 md:hidden">
             {["home", "about", "services", "products", "contact", "blog"].map((item) => (
               <button key={item} onClick={() => handleNavigation(item)} className="nav-link w-full text-center">
                 {item.charAt(0).toUpperCase() + item.slice(1)}
