@@ -57,13 +57,19 @@ const Footer = () => {
         &copy; 2025 <span className="text-green-400">Yare Farm</span>. All Rights Reserved.
         <br />
         <div className="flex justify-center items-center space-x-2 mt-2">
-          <span>Made with</span>
-          <span className="text-red-400 text-lg">❤️</span>
-          <span>by</span>
-          <a href="https://www.instagram.com/abdikhafar_issack/" target="_blank" rel="noopener noreferrer" className="text-pink-400 hover:underline font-bold">
-            Abdikhafar
-          </a>
-        </div>
+  <span>Made with</span>
+  <span className="text-red-400 text-lg">❤️</span>
+  <span>by</span>
+  <a
+    href="https://wa.me/254717219448"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-green-500 hover:underline font-bold"
+  >
+    AbdikhafarIssack
+  </a>
+</div>
+
       </div>
     </footer>
   );

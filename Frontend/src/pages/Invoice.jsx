@@ -151,13 +151,22 @@ const Invoice = () => {
           border: "1px solid #ddd",
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <img
-            src="/images/logo2.png"
-            alt="Company Logo"
-            style={{ width: "100px", height: "100px", margin: "0 auto 10px", borderRadius: "8px" }}
-          />
-          <h1 style={{ color: "green", fontSize: "24px" }}>INVOICE</h1>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+          <div>
+            <p><strong>Yare Farm</strong></p>
+            <p>Nakuru Town, Nakuru County</p>
+            
+            <p>Phone: 0715505444, 0757800700</p>
+            <p>Email: yarefarm@gmail.com</p>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <img
+              src="/images/logo2.png"
+              alt="Company Logo"
+              style={{ width: "100px", height: "100px", margin: "0 auto 10px", borderRadius: "8px" }}
+            />
+            <h1 style={{ color: "green", fontSize: "24px" }}>INVOICE</h1>
+          </div>
         </div>
 
         <table style={{ width: "100%", marginBottom: "20px" }}>
