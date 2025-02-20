@@ -79,14 +79,14 @@ const Invoice = () => {
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 210; // A4 width in mm
+      const imgWidth = 210; 
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-      const pdfBlob = pdf.output("blob"); // Generate PDF as a Blob
-      const pdfUrl = URL.createObjectURL(pdfBlob); // Create a temporary URL for the PDF
+      const pdfBlob = pdf.output("blob"); 
+      const pdfUrl = URL.createObjectURL(pdfBlob); 
 
-      // Save the PDF locally
+     
       pdf.save(`Invoice_${invoice.invoiceNo}.pdf`);
 
       const subject = `Invoice ${invoice.invoiceNo}`;
@@ -97,7 +97,7 @@ const Invoice = () => {
       emailAnchor.href = emailLink;
       emailAnchor.click();
 
-      // Clean up the temporary URL
+           
       URL.revokeObjectURL(pdfUrl);
     });
   };
