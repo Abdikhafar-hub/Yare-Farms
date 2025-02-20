@@ -116,7 +116,7 @@ const Invoice = () => {
       <div ref={invoiceRef} style={{ width: "600px", padding: "20px", background: "#fff", borderRadius: "8px", textAlign: "left", border: "1px solid #ddd" }}>
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <img 
-            src="https://res.cloudinary.com/ddkkfumkl/image/upload/v1740010628/hwrdd7skf8v8xybyv40d.png" 
+            src="/images/logo2.png" 
             alt="Company Logo" 
             style={{ width: "100px", height: "100px", margin: "0 auto 10px", borderRadius: "8px" }}
           />
