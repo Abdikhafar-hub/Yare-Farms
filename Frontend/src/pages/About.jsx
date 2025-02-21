@@ -3,14 +3,14 @@ const About = () => {
     <div id = "about" className="flex flex-col items-center text-center p-8">
       
       <h1 className="text-4xl font-bold mb-4">
-        <span style={{ color: "#FF8C00" }}>About</span> <span className="text-green-600">Yare Farms</span>
+        <span style={{ color: "#FF8C00" }}>About</span> <span className="text-green-600">Yare Farm</span>
       </h1>
       <div className="mt-2 flex justify-center">
         <span className="h-1 w-16 bg-green-600"></span>
       </div>
 
       <p className="text-gray-700 max-w-3xl mx-auto">
-      Located in Nakuru County, we bring extensive experience in the Kienyeji improved chicken industry. Our hatchery ensures your farm is consistently supplied with high-quality, healthy Kienyeji improved chicks.
+      Located in Nakuru County, we bring extensive experience in the  improved Kienyeji chicken industry. Our hatchery ensures your farm is consistently supplied with high-quality, healthy Kienyeji improved chicks.
       </p>
 
       <div className="space-y-8 max-w-3xl mx-auto mt-6">
@@ -23,7 +23,7 @@ const About = () => {
             <span className="h-1 w-16 bg-green-600"></span>
           </div>
           <p className="text-gray-700 mt-2">
-          Yare Farm began as a passion-driven initiative, focused on enhancing local indigenous chicken breeds through imported eggs. Today, we have grown into a leading supplier of high-quality Kienyeji Improved chickens and eggs, serving farmers across Kenya with excellence and reliability
+          Yare Farm began as a passion-driven initiative, focused on enhancing local indigenous chicken . Today, we have grown into a leading supplier of high-quality  Improved  Kienyeji chickens and eggs, serving farmers across Kenya with excellence and reliability
           </p>
         </section>
 
@@ -51,7 +51,7 @@ const About = () => {
           </div>
           <p className="text-gray-700 mt-2">
             Our commitment to quality, innovation, and sustainability sets us apart. 
-            We support smallholder farmers with expert guidance and top-quality products.
+            We support smallholder farmers with high-quality products and expert guidance.
           </p>
         </section>
       </div>

@@ -3,9 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const products = [
-  { id: 1, name: "Day Old Improved Kienyeji Chicks", price: 110, image: "/images/1.jpg" },
-  { id: 2, name: "Week Old Improved Kienyeji Chicks", price: 130, image: "/images/2.png" },
-  { id: 3, name: "Two Weeks Old Improved Kienyeji Chicks", price: 160, image: "/images/4.jpg" },
+  { id: 1, name: "Day Old Improved Kienyeji Chicks", price: 120, image: "/images/1.jpg" },
+  { id: 2, name: "Week Old Improved Kienyeji Chicks", price: 150, image: "/images/2.png" },
+  { id: 3, name: "Two Weeks Old Improved Kienyeji Chicks", price: 180, image: "/images/4.jpg" },
   { id: 4, name: "Three Weeks Old Improved Kienyeji Chicks", price: 190, image: "/images/3.jpg" },
   { id: 5, name: "Month Old Improved Kienyeji Chicks", price: 250, image: "/images/month.jpeg" },
   { id: 6, name: "Fertilized Kienyeji Eggs", price: 900, image: "/images/egg.jpg" },
@@ -18,11 +18,12 @@ const products = [
   { 
     id: 13, 
     name: "Drinkers", 
+    description: "Various sizes of poultry drinkers.", 
     image: "/images/drinker1.jpeg",
     variants: [
-      { size: "7L", price: 340 },
-      { size: "3.5L", price: 280 },
-      { size: "1L", price: 150 }
+      { size: "7L", price: 380 },
+      { size: "3.5L", price: 300 },
+      { size: "1L", price: 160 }
     ]
   },
   { 
@@ -31,10 +32,10 @@ const products = [
     description: "Various sizes of poultry drinkers.", 
     image: "/images/drinker2.jpeg",
     variants: [
-      { size: "6L", price: 330 },
-      { size: "3L", price: 230 },
-      { size: "1.5L", price: 140 },
-      { size: "1L", price: 140 }
+      { size: "6L", price: 350 },
+      { size: "3L", price: 250 },
+      { size: "1.5L", price: 170 },
+      { size: "1L", price: 150 }
     ]
   },
   { 
@@ -44,34 +45,38 @@ const products = [
     image: "/images/feeder1.jpeg",
     variants: [
       { size: "12Kg", price: 860 },
-      { size: "5Kg", price: 680 },
-      { size: "7Kg", price: 580 },
-      { size: "4Kg", price: 430 }
+      { size: "5KGL", price: 680 },
+      { size: "7KG", price: 580 },
+      { size: "4KG", price: 430 }
     ]
   },
   { 
     id: 16, 
-    name: "Rectangular and Round Feeders", 
+    name: "Feeders", 
     description: "Various shapes of poultry Feeders.", 
     image: "/images/shapes.jpeg",
     variants: [
       { size: "Rectangular", price: 860 },
       { size: "Round Big", price: 680 },
-      { size: "Round Small", price: 580 }
+      { size: "Round Small", price: 580 },
+      
     ]
   },
   { 
     id: 17, 
     name: "Feeders", 
+    description: "Different sizes of poultry feeders.", 
     image: "/images/feeder2.jpeg",
     variants: [
-      { size: "10kg", price: 560 },
-      { size: "6kg", price: 420 },
-      { size: "3kg", price: 270 },
-      { size: "1.5kg", price: 160 }
+      { size: "10kg", price: 580 },
+      { size: "6kg", price: 460 },
+      { size: "3kg", price: 290 },
+      { size: "1.5kg", price: 180 }
     ]
-  }
+  },
+ 
 ];
+
 
 const ProductDetail = () => {
   const { id } = useParams();
