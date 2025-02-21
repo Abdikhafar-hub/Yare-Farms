@@ -1,378 +1,304 @@
-import { useRef, useState } from "react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import React, { useState } from 'react';
+import './Invoice.css';
+import { PDFDownloadLink, Document, Page, Text, View, Image, StyleSheet as PDFStyleSheet } from '@react-pdf/renderer';
+import * as html2pdf from 'html2pdf.js';
 
 const Invoice = () => {
-  const invoiceRef = useRef();
+  const [companyName, setCompanyName] = useState('YareFarm');
+  const [companyAddress, setCompanyAddress] = useState('Nakuru Town, Nakuru County');
+  const [companyPhone, setCompanyPhone] = useState('0715505444, 0757800700');
+  const [companyEmail, setCompanyEmail] = useState('yarefarm@gmail.com');
 
-  const [invoice, setInvoice] = useState({
-    invoiceNo: "",
-    date: "",
-    dueDate: "",
-    issuedTo: { name: "", phone: "", address: "" },
-    paymentMethod: "Cash",
-    items: [],
-  });
+  const [recipientName, setRecipientName] = useState('Name');
+  const [recipientAddress, setRecipientAddress] = useState('Address');
+  const [recipientPhone, setRecipientPhone] = useState('Phone');
 
-  const [newItem, setNewItem] = useState({ description: "", unitPrice: "", qty: "" });
+  const [invoiceNumber, setInvoiceNumber] = useState('');
+  const [invoiceDate, setInvoiceDate] = useState('');
+  const [dueDate, setDueDate] = useState('');
 
-  const handlePrint = () => {
-    const input = invoiceRef.current;
-
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-      pdf.save(`Invoice_${invoice.invoiceNo}.pdf`);
-    });
-  };
-
-  const getSubtotal = () => invoice.items.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
-
-  const handleChange = (e, field, subField) => {
-    setInvoice((prev) => ({
-      ...prev,
-      [field]: subField ? { ...prev[field], [subField]: e.target.value } : e.target.value,
-    }));
-  };
-
-  const handleItemChange = (e, field) => {
-    setNewItem({ ...newItem, [field]: e.target.value });
-  };
+  const [items, setItems] = useState([]);
+  const [newItem, setNewItem] = useState({ sn: '', description: '', quantity: '', unitPrice: '' });
 
   const addItem = () => {
-    setInvoice((prev) => ({
-      ...prev,
-      items: [
-        ...prev.items,
-        { ...newItem, unitPrice: parseFloat(newItem.unitPrice), qty: parseInt(newItem.qty) },
-      ],
-    }));
-    setNewItem({ description: "", unitPrice: "", qty: "" });
+    if (newItem.description && newItem.quantity && newItem.unitPrice) {
+      setItems([...items, { ...newItem, sn: items.length + 1, total: newItem.quantity * newItem.unitPrice }]);
+      setNewItem({ sn: '', description: '', quantity: '', unitPrice: '' });
+    }
   };
 
-  const deleteItem = (index) => {
-    setInvoice((prev) => ({
-      ...prev,
-      items: prev.items.filter((_, i) => i !== index),
-    }));
+  const deleteSelectedItems = () => {
+    const updatedItems = items.filter(item => !item.selected);
+    setItems(updatedItems.map((item, index) => ({ ...item, sn: index + 1 })));
   };
 
-  const refreshInvoice = () => {
-    setInvoice({
-      invoiceNo: "",
-      date: "",
-      dueDate: "",
-      issuedTo: { name: "", phone: "", address: "" },
-      paymentMethod: "Cash",
-      items: [],
+  const handleItemSelect = (index) => {
+    const updatedItems = items.map((item, i) =>
+      i === index ? { ...item, selected: !item.selected } : item
+    );
+    setItems(updatedItems);
+  };
+
+  const refreshForm = () => {
+    setRecipientName('Name');
+    setRecipientAddress('Address');
+    setRecipientPhone('Phone');
+    setInvoiceNumber('');
+    setInvoiceDate('');
+    setDueDate('');
+    setItems([]);
+    setNewItem({ sn: '', description: '', quantity: '', unitPrice: '' });
+  };
+
+  const calculateTotal = () => {
+    return items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
+  };
+
+  // PDF Document for react-pdf
+  const InvoicePDF = () => (
+    <Document>
+      <Page style={pdfStyles.page}>
+        <View style={pdfStyles.header}>
+          <View style={pdfStyles.companyInfo}>
+            <Text style={pdfStyles.companyAddress}>{companyAddress}</Text>
+            <Text style={pdfStyles.companyContact}>Phone: {companyPhone}</Text>
+            <Text style={pdfStyles.companyContact}>Email: {companyEmail}</Text>
+          </View>
+          <View style={pdfStyles.invoiceHeader}>
+            <Image src="/images/logo2.png" style={pdfStyles.logo} />
+            <Text style={pdfStyles.invoiceTitle}>INVOICE</Text>
+          </View>
+        </View>
+        <View style={pdfStyles.invoiceDetails}>
+          <Text>Invoice NO: {invoiceNumber}</Text>
+          <Text>Date: {invoiceDate}</Text>
+          <Text>Due Date: {dueDate}</Text>
+        </View>
+        <View style={pdfStyles.billTo}>
+          <Text style={pdfStyles.billToTitle}>BILLED TO:</Text>
+          <Text>Name: {recipientName}</Text>
+          <Text>Address: {recipientAddress}</Text>
+          <Text>Phone: {recipientPhone}</Text>
+        </View>
+        <View style={pdfStyles.table}>
+          <View style={pdfStyles.tableHeader}>
+            <Text style={pdfStyles.tableCell}>SN</Text>
+            <Text style={pdfStyles.tableCell}>DESCRIPTION</Text>
+            <Text style={pdfStyles.tableCell}>QUANTITY</Text>
+            <Text style={pdfStyles.tableCell}>UNIT PRICE (KSH)</Text>
+            <Text style={pdfStyles.tableCell}>TOTAL (KSH)</Text>
+          </View>
+          {items.map((item) => (
+            <View key={item.sn} style={pdfStyles.tableRow}>
+              <Text style={pdfStyles.tableCell}>{item.sn}</Text>
+              <Text style={pdfStyles.tableCell}>{item.description}</Text>
+              <Text style={pdfStyles.tableCell}>{item.quantity}</Text>
+              <Text style={pdfStyles.tableCell}>{item.unitPrice}</Text>
+              <Text style={pdfStyles.tableCell}>{item.total}</Text>
+            </View>
+          ))}
+        </View>
+        <Text style={pdfStyles.total}>TOTAL DUE: {calculateTotal()} KSH</Text>
+        <Text style={pdfStyles.thankYou}>Thank you for doing business with us!</Text>
+        <View style={pdfStyles.signatureSection}>
+          <Text style={pdfStyles.signatureLine}>_________________________</Text>
+          <Text style={pdfStyles.signature}>Jamal Dahir</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+
+  const downloadPDF = () => {
+    const element = document.getElementById('invoice');
+    html2pdf(element, {
+      margin: 10,
+      filename: `invoice_${invoiceNumber}.pdf`,
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     });
-    setNewItem({ description: "", unitPrice: "", qty: "" });
   };
 
-  const handleEmailShare = () => {
-    const input = invoiceRef.current;
-
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 210; 
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-      const pdfBlob = pdf.output("blob"); 
-      const pdfUrl = URL.createObjectURL(pdfBlob); 
-
-     
-      pdf.save(`Invoice_${invoice.invoiceNo}.pdf`);
-
-      const subject = `Invoice ${invoice.invoiceNo}`;
-      const body = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}\n\nThe PDF has been downloaded. Please attach it from your downloads folder.`;
-
-      const emailLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      const emailAnchor = document.createElement("a");
-      emailAnchor.href = emailLink;
-      emailAnchor.click();
-
-           
-      URL.revokeObjectURL(pdfUrl);
-    });
+  const shareViaWhatsApp = () => {
+    const message = `Invoice #${invoiceNumber} - Total: ${calculateTotal()} KSH. View details: [Link to your website or PDF]`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
   };
 
-  const handleWhatsAppShare = () => {
-    const input = invoiceRef.current;
-
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-      const pdfBlob = pdf.output("blob"); // Generate PDF as a Blob
-      const pdfUrl = URL.createObjectURL(pdfBlob); // Create a temporary URL for the PDF
-
-      // Save the PDF locally
-      pdf.save(`Invoice_${invoice.invoiceNo}.pdf`);
-
-      const message = `Please find attached the invoice.\n\nInvoice No: ${invoice.invoiceNo}\nDate: ${invoice.date}\nDue Date: ${invoice.dueDate}\nTotal: Ksh ${getSubtotal()}\n\nThe PDF has been downloaded. Please attach it from your downloads folder.`;
-      const whatsappLink = `https://wa.me/?text=${encodeURIComponent(message)}`;
-      const whatsappAnchor = document.createElement("a");
-      whatsappAnchor.href = whatsappLink;
-      whatsappAnchor.click();
-
-      // Clean up the temporary URL
-      URL.revokeObjectURL(pdfUrl);
-    });
+  const shareViaEmail = () => {
+    const subject = `Invoice #${invoiceNumber}`;
+    const body = `Please find attached Invoice #${invoiceNumber} with a total of ${calculateTotal()} KSH. View details: [Link to your website or PDF]`;
+    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minHeight: "100vh",
-        padding: "40px 0",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <div
-        ref={invoiceRef}
-        style={{
-          width: "600px",
-          padding: "20px",
-          background: "#fff",
-          borderRadius: "8px",
-          textAlign: "left",
-          border: "1px solid #ddd",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-          <div>
-            <p><strong>Yare Farm</strong></p>
-            <p>Nakuru Town, Nakuru County</p>
-            
-            <p>Phone: 0715505444, 0757800700</p>
-            <p>Email: yarefarm@gmail.com</p>
+    <div className="invoice-container">
+      <div id="invoice" className="invoice">
+        <div className="header">
+          <div className="company-info">
+            <h2>{companyName}</h2>
+            <p>{companyAddress}</p>
+            <p>Phone: {companyPhone}</p>
+            <p>Email: {companyEmail}</p>
           </div>
-          <div style={{ textAlign: "center" }}>
-            <img
-              src="/images/logo2.png"
-              alt="Company Logo"
-              style={{ width: "100px", height: "100px", margin: "0 auto 10px", borderRadius: "8px" }}
-            />
-            <h1 style={{ color: "green", fontSize: "24px" }}>INVOICE</h1>
+          <div className="invoice-header">
+            <img src="/images/logo2.png" alt="YareFarm Logo" className="company-logo" />
+            <h2 className="invoice-title">INVOICE</h2>
           </div>
         </div>
-
-        <table style={{ width: "100%", marginBottom: "20px" }}>
-          <tbody>
-            <tr>
-              <td>
-                <strong>Invoice No:</strong>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  value={invoice.invoiceNo}
-                  onChange={(e) => handleChange(e, "invoiceNo")}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Date:</strong>
-              </td>
-              <td>
-                <input type="date" value={invoice.date} onChange={(e) => handleChange(e, "date")} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Due Date:</strong>
-              </td>
-              <td>
-                <input
-                  type="date"
-                  value={invoice.dueDate}
-                  onChange={(e) => handleChange(e, "dueDate")}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h3 style={{ fontWeight: "bold", marginBottom: "10px" }}>Issued To</h3>
-        <table style={{ width: "100%" }}>
-          <tbody>
-            <tr>
-              <td>
-                <strong>Name:</strong>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  placeholder="Name"
-                  value={invoice.issuedTo.name}
-                  onChange={(e) => handleChange(e, "issuedTo", "name")}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Phone:</strong>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  placeholder="Phone Number"
-                  value={invoice.issuedTo.phone}
-                  onChange={(e) => handleChange(e, "issuedTo", "phone")}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Address:</strong>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  placeholder="Address"
-                  value={invoice.issuedTo.address}
-                  onChange={(e) => handleChange(e, "issuedTo", "address")}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h3>Payment Method</h3>
-        <select value={invoice.paymentMethod} onChange={(e) => handleChange(e, "paymentMethod")}>
-          <option value="Cash">Cash</option>
-          <option value="Mpesa">Mpesa</option>
-          <option value="Bank">Bank</option>
-        </select>
-
-        <h3>Items</h3>
-        <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px" }}>
+        <div className="invoice-details">
+          <div className="invoice-no">
+            <label>Invoice NO:</label>
+            <input
+              type="text"
+              value={invoiceNumber}
+              onChange={(e) => setInvoiceNumber(e.target.value)}
+              placeholder="Invoice #"
+            />
+          </div>
+          <div className="dates">
+            <label>Date:</label>
+            <input
+              type="date"
+              value={invoiceDate}
+              onChange={(e) => setInvoiceDate(e.target.value)}
+            />
+            <label>Due Date:</label>
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="bill-to">
+          <h3>BILLED TO:</h3>
+          <div className="recipient-field">
+            <label>Name:</label>
+            <input
+              type="text"
+              value={recipientName}
+              onChange={(e) => setRecipientName(e.target.value)}
+            />
+          </div>
+          <div className="recipient-field">
+            <label>Address:</label>
+            <input
+              type="text"
+              value={recipientAddress}
+              onChange={(e) => setRecipientAddress(e.target.value)}
+            />
+          </div>
+          <div className="recipient-field">
+            <label>Phone:</label>
+            <input
+              type="text"
+              value={recipientPhone}
+              onChange={(e) => setRecipientPhone(e.target.value)}
+            />
+          </div>
+        </div>
+        <table className="items-table">
           <thead>
-            <tr style={{ background: "yellow" }}>
-              <th>Description</th>
-              <th>Unit Price (Ksh)</th>
-              <th>Qty</th>
-              <th>Total (Ksh)</th>
+            <tr>
+              <th>SN</th>
+              <th>DESCRIPTION</th>
+              <th>QUANTITY</th>
+              <th>UNIT PRICE (KSH)</th>
+              <th>TOTAL (KSH)</th>
+              <th className="print-hide">Select</th>
             </tr>
           </thead>
           <tbody>
-            {invoice.items.map((item, index) => (
-              <tr key={index}>
+            {items.map((item, index) => (
+              <tr key={item.sn}>
+                <td>{item.sn}</td>
                 <td>{item.description}</td>
-                <td>Ksh {item.unitPrice}</td>
-                <td>{item.qty}</td>
-                <td>Ksh {item.unitPrice * item.qty}</td>
-                <td>
-                  <button
-                    onClick={() => deleteItem(index)}
-                    style={{
-                      visibility: "hidden",
-                      width: "0",
-                      height: "0",
-                      padding: "0",
-                      border: "none",
-                    }}
-                  >
-                    Delete
-                  </button>
+                <td>{item.quantity}</td>
+                <td>{item.unitPrice}</td>
+                <td>{item.total}</td>
+                <td className="print-hide">
+                  <input
+                    type="checkbox"
+                    checked={item.selected || false}
+                    onChange={() => handleItemSelect(index)}
+                  />
                 </td>
               </tr>
             ))}
+            <tr>
+              <td>{items.length + 1}</td>
+              <td>
+                <input
+                  type="text"
+                  value={newItem.description}
+                  onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
+                  placeholder="Description"
+                  className="print-hide"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value={newItem.quantity}
+                  onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
+                  placeholder="Quantity"
+                  className="print-hide"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value={newItem.unitPrice}
+                  onChange={(e) => setNewItem({ ...newItem, unitPrice: e.target.value })}
+                  placeholder="Unit Price"
+                  className="print-hide"
+                />
+              </td>
+              <td>{newItem.quantity * newItem.unitPrice || 0}</td>
+              <td><button onClick={addItem}>Add</button></td>
+            </tr>
           </tbody>
         </table>
-
-        <div>
-          <input
-            type="text"
-            placeholder="Description"
-            value={newItem.description}
-            onChange={(e) => handleItemChange(e, "description")}
-          />
-          <input
-            type="number"
-            placeholder="Unit Price"
-            value={newItem.unitPrice}
-            onChange={(e) => handleItemChange(e, "unitPrice")}
-          />
-          <input
-            type="number"
-            placeholder="Qty"
-            value={newItem.qty}
-            onChange={(e) => handleItemChange(e, "qty")}
-          />
-          <button onClick={addItem}>Add Item</button>
-        </div>
-
-        <h3 style={{ textAlign: "right" }}>Total: Ksh {getSubtotal()}</h3>
-
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
-          <div>
-            <p>Thank you for doing business with us!</p>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <p>__________________________</p>
-            <p>Jamal Dahir</p>
-          </div>
-        </div>
+        <div className="total">TOTAL DUE: {calculateTotal()} KSH</div>
+        <div className="thank-you">Thank you for doing business with us!</div><br />
+        <Text style={pdfStyles.signatureLine}>_________________________</Text>
+        <div className="signature">Jamal Dahir</div>
       </div>
-
-      {/* Buttons and Delete Dropdown (Excluded from Print) */}
-      <div
-        style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", width: "600px" }}
-        className="print:hidden"
-      >
-        <button onClick={handlePrint} style={{ background: "green", color: "#fff" }}>
-          Download PDF
-        </button>
-        <button onClick={handleEmailShare} style={{ background: "blue", color: "#fff" }}>
-          Share via Email
-        </button>
-        <button onClick={handleWhatsAppShare} style={{ background: "green", color: "#fff" }}>
-          Share via WhatsApp
-        </button>
-        <button onClick={refreshInvoice} style={{ background: "red", color: "#fff" }}>
-          Refresh
-        </button>
-        <select
-          value={-1}
-          onChange={(e) => {
-            const index = parseInt(e.target.value);
-            if (index >= 0) deleteItem(index);
-            e.target.value = -1;
-          }}
-        >
-          <option value={-1}>Select Item to Delete</option>
-          {invoice.items.map((item, index) => (
-            <option key={index} value={index}>
-              {item.description} (Ksh {item.unitPrice * item.qty})
-            </option>
-          ))}
-        </select>
+      <div className="buttons">
+        <button onClick={shareViaWhatsApp}>Share via WhatsApp</button>
+        <button onClick={shareViaEmail}>Share via Email</button>
+        <button onClick={refreshForm}>Refresh</button>
+        <button onClick={deleteSelectedItems}>Delete Selected Items</button>
+        <PDFDownloadLink document={<InvoicePDF />} fileName={`invoice_${invoiceNumber}.pdf`}>
+          {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download PDF (react-pdf)')}
+        </PDFDownloadLink>
       </div>
-
-      {/* Hide buttons when printing */}
-      <style>
-        {`
-          @media print {
-            .print\\:hidden { display: none !important; }
-          }
-        `}
-      </style>
     </div>
   );
 };
+
+// PDF Styles for react-pdf
+const pdfStyles = PDFStyleSheet.create({
+  page: { padding: 30, fontFamily: 'Helvetica', fontSize: 12 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
+  companyInfo: { fontSize: 12 },
+  companyName: { fontSize: 18, fontWeight: 'bold' },
+  companyAddress: { fontSize: 10 },
+  companyContact: { fontSize: 10 },
+  invoiceHeader: { textAlign: 'right' },
+  logo: { width: 100, height: 50, marginBottom: 10 },
+  invoiceTitle: { fontSize: 24, color: 'green', fontWeight: 'bold' },
+  invoiceDetails: { marginBottom: 20 },
+  billTo: { marginBottom: 20 },
+  billToTitle: { fontSize: 14, fontWeight: 'bold', marginBottom: 5 },
+  table: { width: '100%', border: '1px solid #000' },
+  tableHeader: { flexDirection: 'row', backgroundColor: '#f0f0f0', borderBottom: '1px solid #000' },
+  tableRow: { flexDirection: 'row', borderBottom: '1px solid #000' },
+  tableCell: { flex: 1, padding: 5, borderRight: '1px solid #000' },
+  total: { marginTop: 20, fontSize: 14, fontWeight: 'bold' },
+  thankYou: { marginTop: 20, fontSize: 12 },
+  signatureSection: { marginTop: 20, textAlign: 'left' },
+  signatureLine: { fontSize: 12, marginBottom: 5 },
+  signature: { fontSize: 12, fontStyle: 'italic' },
+});
 
 export default Invoice;
