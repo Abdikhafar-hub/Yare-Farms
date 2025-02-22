@@ -207,3 +207,11 @@
 .buttons button:hover {
   background-color: #0056b3;
 }
+
+
+/* Invoice.css */
+.signature-image {
+  width: 80px; /* Reduced from 150px to make it smaller */
+  height: auto;
+  margin: 20px 0 5px 0;
+}

@@ -100,6 +100,7 @@ const Invoice = () => {
         </View>
         <Text style={pdfStyles.total}>TOTAL DUE: {calculateTotal()} KSH</Text>
         <Text style={pdfStyles.thankYou}>Thank you for doing business with us!</Text>
+        <Image src="/images/signature.png" style={pdfStyles.signatureImage} />
         <View style={pdfStyles.signatureSection}>
           <Text style={pdfStyles.signatureLine}>_________________________</Text>
           <Text style={pdfStyles.signature}>Jamal Dahir</Text>
@@ -259,7 +260,8 @@ const Invoice = () => {
           </tbody>
         </table>
         <div className="total">TOTAL DUE: {calculateTotal()} KSH</div>
-        <div className="thank-you">Thank you for doing business with us!</div><br />
+        <div className="thank-you">Thank you for doing business with us!</div>
+        <img src="/images/sign.png" alt="Signature" className="signature-image" />
         <Text style={pdfStyles.signatureLine}>_________________________</Text>
         <div className="signature">Jamal Dahir</div>
       </div>
@@ -277,6 +279,7 @@ const Invoice = () => {
 };
 
 // PDF Styles for react-pdf
+// In pdfStyles within Invoice.js
 const pdfStyles = PDFStyleSheet.create({
   page: { padding: 30, fontFamily: 'Helvetica', fontSize: 12 },
   header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
@@ -296,6 +299,12 @@ const pdfStyles = PDFStyleSheet.create({
   tableCell: { flex: 1, padding: 5, borderRight: '1px solid #000' },
   total: { marginTop: 20, fontSize: 14, fontWeight: 'bold' },
   thankYou: { marginTop: 20, fontSize: 12 },
+  signatureImage: {
+    width: 80, /* Reduced from 150 to make it smaller */
+    height: 'auto',
+    marginTop: 20,
+    marginBottom: 5
+  },
   signatureSection: { marginTop: 20, textAlign: 'left' },
   signatureLine: { fontSize: 12, marginBottom: 5 },
   signature: { fontSize: 12, fontStyle: 'italic' },
