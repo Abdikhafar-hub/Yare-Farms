@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './Invoice.css';
 import { PDFDownloadLink, Document, Page, Text, View, Image, StyleSheet as PDFStyleSheet } from '@react-pdf/renderer';
 import * as html2pdf from 'html2pdf.js';
+import logoImage from '/images/logo2.png'; 
+import signatureImage from '/images/sign.png'; 
 
 const Invoice = () => {
   const [companyName, setCompanyName] = useState('YareFarm');
@@ -28,7 +30,7 @@ const Invoice = () => {
   };
 
   const deleteSelectedItems = () => {
-    const updatedItems = items.filter(item => !item.selected);
+    const updatedItems = items.filter((item) => !item.selected);
     setItems(updatedItems.map((item, index) => ({ ...item, sn: index + 1 })));
   };
 
@@ -51,7 +53,7 @@ const Invoice = () => {
   };
 
   const calculateTotal = () => {
-    return items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
+    return items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
   };
 
   // PDF Document for react-pdf
@@ -60,12 +62,13 @@ const Invoice = () => {
       <Page style={pdfStyles.page}>
         <View style={pdfStyles.header}>
           <View style={pdfStyles.companyInfo}>
+            <Text style={pdfStyles.companyName}>{companyName}</Text>
             <Text style={pdfStyles.companyAddress}>{companyAddress}</Text>
             <Text style={pdfStyles.companyContact}>Phone: {companyPhone}</Text>
             <Text style={pdfStyles.companyContact}>Email: {companyEmail}</Text>
           </View>
           <View style={pdfStyles.invoiceHeader}>
-            <Image src="/images/logo2.png" style={pdfStyles.logo} />
+            <Image src={logoImage} style={pdfStyles.logo} />
             <Text style={pdfStyles.invoiceTitle}>INVOICE</Text>
           </View>
         </View>
@@ -100,7 +103,7 @@ const Invoice = () => {
         </View>
         <Text style={pdfStyles.total}>TOTAL DUE: {calculateTotal()} KSH</Text>
         <Text style={pdfStyles.thankYou}>Thank you for doing business with us!</Text>
-        <Image src="/images/signature.png" style={pdfStyles.signatureImage} />
+        <Image src={signatureImage} style={pdfStyles.signatureImage} />
         <View style={pdfStyles.signatureSection}>
           <Text style={pdfStyles.signatureLine}>_________________________</Text>
           <Text style={pdfStyles.signature}>Jamal Dahir</Text>
@@ -115,7 +118,7 @@ const Invoice = () => {
       margin: 10,
       filename: `invoice_${invoiceNumber}.pdf`,
       html2canvas: { scale: 2 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     });
   };
 
@@ -255,14 +258,16 @@ const Invoice = () => {
                 />
               </td>
               <td>{newItem.quantity * newItem.unitPrice || 0}</td>
-              <td><button onClick={addItem}>Add</button></td>
+              <td>
+                <button onClick={addItem}>Add</button>
+              </td>
             </tr>
           </tbody>
         </table>
         <div className="total">TOTAL DUE: {calculateTotal()} KSH</div>
         <div className="thank-you">Thank you for doing business with us!</div>
         <img src="/images/sign.png" alt="Signature" className="signature-image" />
-        <Text style={pdfStyles.signatureLine}>_________________________</Text>
+        <div className="signature-line">_________________________</div>
         <div className="signature">Jamal Dahir</div>
       </div>
       <div className="buttons">
@@ -270,8 +275,9 @@ const Invoice = () => {
         <button onClick={shareViaEmail}>Share via Email</button>
         <button onClick={refreshForm}>Refresh</button>
         <button onClick={deleteSelectedItems}>Delete Selected Items</button>
+       
         <PDFDownloadLink document={<InvoicePDF />} fileName={`invoice_${invoiceNumber}.pdf`}>
-          {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download PDF (react-pdf)')}
+          {({ loading }) => (loading ? 'Loading document...' : 'Download PDF (react-pdf)')}
         </PDFDownloadLink>
       </div>
     </div>
@@ -279,11 +285,10 @@ const Invoice = () => {
 };
 
 // PDF Styles for react-pdf
-// In pdfStyles within Invoice.js
 const pdfStyles = PDFStyleSheet.create({
   page: { padding: 30, fontFamily: 'Helvetica', fontSize: 12 },
   header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
-  companyInfo: { fontSize: 12 },
+  companyInfo: { fontSize: 15 },
   companyName: { fontSize: 18, fontWeight: 'bold' },
   companyAddress: { fontSize: 10 },
   companyContact: { fontSize: 10 },
@@ -300,12 +305,12 @@ const pdfStyles = PDFStyleSheet.create({
   total: { marginTop: 20, fontSize: 14, fontWeight: 'bold' },
   thankYou: { marginTop: 20, fontSize: 12 },
   signatureImage: {
-    width: 80, /* Reduced from 150 to make it smaller */
+    width: 80,
     height: 'auto',
-    marginTop: 20,
-    marginBottom: 5
+    marginTop: 10,
+    marginBottom: 0,
   },
-  signatureSection: { marginTop: 20, textAlign: 'left' },
+  signatureSection: { marginTop: 5, textAlign: 'left' },
   signatureLine: { fontSize: 12, marginBottom: 5 },
   signature: { fontSize: 12, fontStyle: 'italic' },
 });
