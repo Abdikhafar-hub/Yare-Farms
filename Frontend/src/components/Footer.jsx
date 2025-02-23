@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="space-y-2">
           <img src="/images/logo2.png" alt="Poultry Farm Logo" className="w-24 h-auto mx-auto md:mx-0" />
           <p className="text-gray-400">
-            High-quality poultry services ensuring healthy bird growth in a disease-free environment.
+          Yare Farm is committed to delivering high-quality services and products <br />in poultry farming, ensuring your birds grow healthy and thrive in a disease-free environment.
           </p>
           <div className="flex justify-center md:justify-start space-x-3 text-sm">
             <a href="https://web.facebook.com/profile.php?id=61573552649251" className="text-blue-600 hover:text-blue-800"><i className="fab fa-facebook"></i></a>
@@ -24,12 +24,12 @@ const Footer = () => {
         <div className="space-y-2">
           <h3 className="font-semibold text-green-500">Services</h3>
           <ul className="text-gray-400 space-y-1">
-            <li>🐣 Chicks Delivery</li>
-            <li>🥚 Eggs & Layers</li>
-            <li>🛠️ Incubation</li>
+          <li>🐣 Chicks Delivery</li>
+            <li>🥚 Layers Eggs, Broilers, Cockerels, Fresh & Fertilized Kienyeji Eggs</li>
+            <li>🛠️ Incubation Service</li>
             <li>🌱 Manure</li>
-            <li>📞 Consulting</li>
-            <li>🥄 Poultry Equipment</li>
+            <li>📞 Poultry Consulting Services</li>
+            <li>🥄 Poultry Equipment: Drinkers, Feeders, etc.</li>
           </ul>
         </div>
 
