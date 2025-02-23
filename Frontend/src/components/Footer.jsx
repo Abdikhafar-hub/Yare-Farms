@@ -13,9 +13,15 @@ const Footer = () => {
           </p>
           
           <div className="flex justify-center md:justify-start space-x-4">
-            <a href="#" className="text-gray-400 hover:text-white"><i className="fab fa-facebook"></i></a>
-            <a href="#" className="text-gray-400 hover:text-white"><i className="fab fa-twitter"></i></a>
-            <a href="#" className="text-gray-400 hover:text-white"><i className="fab fa-linkedin"></i></a>
+            <a href="https://web.facebook.com/profile.php?id=61573552649251" className="text-gray-400 hover:text-white"><i className="fab fa-facebook"></i></a>
+            <a href="https://x.com/Yarefarmer" className="text-gray-400 hover:text-white"><i className="fab fa-twitter"></i></a>
+            <a href="https://www.tiktok.com/@yare.farm.ltd" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+    <i className="fab fa-tiktok"></i>
+  </a>
+            <a href="yarefarm@gmail.com" className="text-gray-400 hover:text-white">
+  <i className="fas fa-envelope"></i>
+</a>
+
             <a href="#" className="text-gray-400 hover:text-white"><i className="fab fa-instagram"></i></a>
           </div>
         </div>
