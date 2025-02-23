@@ -215,3 +215,20 @@
   height: auto;
   margin: 0px 0 0px 0;
 }
+
+.invoice-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.invoice {
+  border: 1px solid #ddd;
+  padding: 20px;
+}
+
+.serial-number {
+  width: 50px;
+}
+
+/* Add any additional styling you had in your original Invoice.css */

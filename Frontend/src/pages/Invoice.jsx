@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import './Invoice.css';
 import { PDFDownloadLink, Document, Page, Text, View, Image, StyleSheet as PDFStyleSheet } from '@react-pdf/renderer';
 import * as html2pdf from 'html2pdf.js';
-import logoImage from '/images/logo2.png'; 
-import signatureImage from '/images/sign.png'; 
+import logoImage from '/images/logo2.png';
+import signatureImage from '/images/sign.png';
 
 const Invoice = () => {
-  const [companyName, setCompanyName] = useState('YareFarm');
+  const [companyName, setCompanyName] = useState('Yare Farm');
   const [companyAddress, setCompanyAddress] = useState('Nakuru Town, Nakuru County');
   const [companyPhone, setCompanyPhone] = useState('0715505444, 0757800700');
   const [companyEmail, setCompanyEmail] = useState('yarefarm@gmail.com');
@@ -56,7 +56,6 @@ const Invoice = () => {
     return items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
   };
 
-  // PDF Document for react-pdf
   const InvoicePDF = () => (
     <Document>
       <Page style={pdfStyles.page}>
@@ -85,7 +84,7 @@ const Invoice = () => {
         </View>
         <View style={pdfStyles.table}>
           <View style={pdfStyles.tableHeader}>
-            <Text style={pdfStyles.tableCell}>SN</Text>
+            <Text style={pdfStyles.serialNumber}>S/NO:</Text>
             <Text style={pdfStyles.tableCell}>DESCRIPTION</Text>
             <Text style={pdfStyles.tableCell}>QUANTITY</Text>
             <Text style={pdfStyles.tableCell}>UNIT PRICE (KSH)</Text>
@@ -93,7 +92,7 @@ const Invoice = () => {
           </View>
           {items.map((item) => (
             <View key={item.sn} style={pdfStyles.tableRow}>
-              <Text style={pdfStyles.tableCell}>{item.sn}</Text>
+              <Text style={pdfStyles.serialNumber}>{item.sn}</Text>
               <Text style={pdfStyles.tableCell}>{item.description}</Text>
               <Text style={pdfStyles.tableCell}>{item.quantity}</Text>
               <Text style={pdfStyles.tableCell}>{item.unitPrice}</Text>
@@ -106,7 +105,7 @@ const Invoice = () => {
         <Image src={signatureImage} style={pdfStyles.signatureImage} />
         <View style={pdfStyles.signatureSection}>
           <Text style={pdfStyles.signatureLine}>_________________________</Text>
-          <Text style={pdfStyles.signature}>Jamal Dahir</Text>
+          <Text style={pdfStyles.signature}>Dahir</Text>
         </View>
       </Page>
     </Document>
@@ -144,7 +143,7 @@ const Invoice = () => {
             <p>Email: {companyEmail}</p>
           </div>
           <div className="invoice-header">
-            <img src="/images/logo2.png" alt="YareFarm Logo" className="company-logo" />
+            <img src="/images/logo2.png" alt="Yare Farm Logo" className="company-logo" />
             <h2 className="invoice-title">INVOICE</h2>
           </div>
         </div>
@@ -203,7 +202,7 @@ const Invoice = () => {
         <table className="items-table">
           <thead>
             <tr>
-              <th>SN</th>
+              <th className="serial-number">S/NO:</th>
               <th>DESCRIPTION</th>
               <th>QUANTITY</th>
               <th>UNIT PRICE (KSH)</th>
@@ -268,14 +267,13 @@ const Invoice = () => {
         <div className="thank-you">Thank you for doing business with us!</div>
         <img src="/images/sign.png" alt="Signature" className="signature-image" />
         <div className="signature-line">_________________________</div>
-        <div className="signature">Jamal Dahir</div>
+        <div className="signature">Dahir</div>
       </div>
       <div className="buttons">
         <button onClick={shareViaWhatsApp}>Share via WhatsApp</button>
         <button onClick={shareViaEmail}>Share via Email</button>
         <button onClick={refreshForm}>Refresh</button>
         <button onClick={deleteSelectedItems}>Delete Selected Items</button>
-       
         <PDFDownloadLink document={<InvoicePDF />} fileName={`invoice_${invoiceNumber}.pdf`}>
           {({ loading }) => (loading ? 'Loading document...' : 'Download PDF (react-pdf)')}
         </PDFDownloadLink>
@@ -284,7 +282,6 @@ const Invoice = () => {
   );
 };
 
-// PDF Styles for react-pdf
 const pdfStyles = PDFStyleSheet.create({
   page: { padding: 30, fontFamily: 'Helvetica', fontSize: 12 },
   header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
@@ -301,7 +298,16 @@ const pdfStyles = PDFStyleSheet.create({
   table: { width: '100%', border: '1px solid #000' },
   tableHeader: { flexDirection: 'row', backgroundColor: '#f0f0f0', borderBottom: '1px solid #000' },
   tableRow: { flexDirection: 'row', borderBottom: '1px solid #000' },
-  tableCell: { flex: 1, padding: 5, borderRight: '1px solid #000' },
+  serialNumber: { 
+    width: 50, 
+    padding: 5, 
+    borderRight: '1px solid #000' 
+  },
+  tableCell: { 
+    flex: 1, 
+    padding: 5, 
+    borderRight: '1px solid #000' 
+  },
   total: { marginTop: 20, fontSize: 14, fontWeight: 'bold' },
   thankYou: { marginTop: 20, fontSize: 12 },
   signatureImage: {

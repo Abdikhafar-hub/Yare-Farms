@@ -62,10 +62,12 @@ const CartPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
       <div className="max-w-3xl bg-white shadow-md rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-green-700">Shopping Cart</h2>
+        <h1 className="text-2xl font-bold text-green-700">Shopping Cart</h1>
+        <p className="text-center text-sm mt-2">🚚Delivery done countrywide at customer's cost or pick up at central position </p>
 
         {cart.length === 0 ? (
           <p className="text-gray-600 mt-4">Your cart is empty.</p>
+          
         ) : (
           <div className="mt-4">
             {cart.map((item, index) => (
